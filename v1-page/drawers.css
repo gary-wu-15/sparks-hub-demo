@@ -1,0 +1,116 @@
+dialog.reference-drawer {
+  inset: var(--preview-top) 0 auto auto;
+  margin: 0;
+  padding: 0;
+  width: min(400px, 100%);
+  max-width: 100%;
+  height: var(--preview-height);
+  max-height: var(--preview-height);
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: -4px 0 16px #0002;
+}
+dialog.reference-drawer::backdrop { background: rgb(0 0 0 / 60%); }
+.reference-drawer #dialog-content { height: 100%; display: flex; flex-direction: column; }
+.reference-drawer .dialog-close {
+  z-index: 2;
+  top: 8px;
+  right: 12px;
+  padding: 6px;
+  width: 32px;
+  height: 32px;
+  background: white;
+  display: grid;
+  place-items: center;
+}
+.drawer-scroll { min-height: 0; flex: 1; overflow-y: auto; overscroll-behavior: contain; }
+.drawer-content { padding: 52px 24px 28px; }
+.reference-drawer h2 { font-size: 20px; line-height: 28px; padding: 0; margin: 0 0 8px; }
+.reference-drawer p { font-size: 16px; line-height: 26px; margin: 0 0 24px; }
+.drawer-hero { display: block; width: 100%; aspect-ratio: 1.25; object-fit: cover; }
+.drawer-content.with-hero { padding-top: 16px; }
+.drawer-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.drawer-tags span { background: #101820; color: white; padding: 2px 8px; font-size: 12px; line-height: 20px; }
+.reference-drawer .offer-subtitle { margin-bottom: 28px; }
+.reference-drawer .single-shop-note { background: #f3f8fc; border-left: 4px solid #397fb0; padding: 8px 12px; border-radius: 3px 0 0 3px; }
+.drawer-earning { display: flex; align-items: center; gap: 8px; margin: 24px 0; font-size: 14px; font-weight: 700; }
+.drawer-earning .gold-star { width: 22px; height: 22px; font-size: 17px; }
+.drawer-link {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #101820;
+  background: white;
+  color: #101820;
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 26px;
+}
+.drawer-link:hover { background: #f5f5f5; }
+.drawer-accordions { margin-top: 24px; }
+.drawer-accordion { border-bottom: 1px solid #c7c7c7; }
+.drawer-accordion:last-child { border-bottom: 0; }
+.drawer-accordion summary {
+  list-style: none;
+  padding: 18px 28px 18px 0;
+  position: relative;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 24px;
+}
+.drawer-accordion summary::-webkit-details-marker { display: none; }
+.drawer-accordion summary::after {
+  content: '';
+  position: absolute;
+  right: 9px;
+  top: 22px;
+  width: 12px;
+  height: 12px;
+  border-right: 1px solid #101820;
+  border-bottom: 1px solid #101820;
+  transform: rotate(45deg);
+}
+.drawer-accordion[open] summary::after { transform: rotate(225deg); top: 27px; }
+.drawer-accordion summary:focus-visible { outline: 2px solid #101820; outline-offset: -2px; }
+.reference-drawer .accordion-copy { padding: 4px 0 16px; }
+.reference-drawer .accordion-copy p { margin: 0 0 20px; }
+.reference-drawer .accordion-copy p:last-child { margin-bottom: 0; }
+.reference-drawer .drawer-disclaimer { font-size: 11px; line-height: 17px; color: #626262; margin: 28px 0 0; }
+.voucher-row { display: flex; align-items: center; justify-content: space-between; border-block: 1px solid #c7c7c7; padding: 8px 0; margin-top: 24px; }
+.voucher-value { font-size: 20px; line-height: 28px; }
+.voucher-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; font-size: 14px; line-height: 22px; color: #707070; }
+.voucher-meta strong { color: #101820; font-size: 14px; font-weight: 700; }
+.voucher-terms { margin-top: 0; border-bottom: 1px solid #c7c7c7; }
+.voucher-terms .drawer-accordion { border-bottom: 0; }
+.reference-drawer .app-prompt { margin: 24px 0 16px; font-size: 14px; line-height: 22px; }
+.app-prompt a { font-size: 16px; text-decoration: underline; text-underline-offset: 2px; }
+.app-store-link { display: inline-block; }
+.app-store-link img { display: block; width: 136px; height: 40px; }
+.sparks-wordmark { font-size: 30px; line-height: 40px; font-weight: 400; letter-spacing: -1.5px; margin: 42px 0 8px; display: flex; align-items: center; }
+.sparks-wordmark .mns-icon { width: 34px; height: 34px; color: #ab8840; margin-inline: -7px -3px; }
+.reference-drawer .demo-card-number { font-size: 14px; line-height: 22px; margin-bottom: 24px; }
+.demo-barcode { position: relative; margin: 28px auto; width: 80%; height: 80px; background: repeating-linear-gradient(90deg,#000 0 2px,#fff 2px 5px,#000 5px 9px,#fff 9px 11px,#000 11px 12px,#fff 12px 16px); }
+.demo-barcode::after { content: 'DEMO — NOT VALID'; position: absolute; inset: 26px -5px auto; background: white; text-align: center; font-size: 13px; font-weight: 700; letter-spacing: 2px; padding: 4px; }
+.reference-drawer .card-loaded { font-size: 16px; line-height: 26px; font-weight: 700; margin: 26px 0; }
+.reference-drawer .card-instructions { font-size: 14px; line-height: 22px; }
+.drawer-footer { flex-shrink: 0; border-top: 1px solid #c7c7c7; background: white; }
+.drawer-footer button { width: 100%; min-height: 64px; background: white; border: 0; padding: 18px 24px; font-size: 16px; font-weight: 700; }
+.drawer-footer button:hover { background: #f5f5f5; }
+.drawer-footer button:disabled { opacity: 1; color: #606060; cursor: default; }
+.drawer-primary { width: 100%; min-height: 48px; padding: 12px 16px; border: 1px solid #101820; background: #101820; color: white; font-size: 16px; line-height: 24px; }
+.drawer-primary:hover { background: #30373d; }
+.drawer-footer .drawer-primary { background: #101820; color: white; }
+.drawer-footer .drawer-primary:hover { background: #30373d; }
+.drawer-progress { margin: 24px 0; padding: 16px; background: #f7f5f0; }
+.drawer-progress .progress-track { background: #d5d0c2; }
+.reference-drawer .drawer-progress p { font-size: 14px; line-height: 22px; margin: 8px 0 0; }
+.reference-drawer .wallet-drawer-balance { font-size: 40px; line-height: 48px; font-weight: 700; margin: 20px 0; }
+@media (max-width: 540px) {
+  dialog.reference-drawer { width: 100%; }
+  .drawer-content { padding-inline: 24px; }
+}

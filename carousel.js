@@ -38,13 +38,23 @@ export function mountCarousels(root) {
       const destination = Math.max(0, Math.min(items.length - 1, target));
       track.scrollTo({ left: offsets()[destination], behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
     }
-    previous?.addEventListener('click', () => goTo(index - 1));
-    next?.addEventListener('click', () => goTo(index + 1));
+    function move(direction) {
+      const targets = offsets();
+      // Several visible cards can share the clamped end offset. Skip those
+      // duplicates so Previous can always move away from the end of the row.
+      const target = direction < 0
+        ? targets.findLastIndex((offset) => offset < track.scrollLeft - 2)
+        : targets.findIndex((offset) => offset > track.scrollLeft + 2);
+      if (target >= 0) goTo(target);
+    }
+    previous?.addEventListener('click', () => move(-1));
+    next?.addEventListener('click', () => move(1));
     dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
     track.addEventListener('keydown', (event) => {
       if (event.target !== track || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
       event.preventDefault();
-      goTo(event.key === 'Home' ? 0 : event.key === 'End' ? items.length - 1 : index + (event.key === 'ArrowRight' ? 1 : -1));
+      if (event.key === 'Home' || event.key === 'End') goTo(event.key === 'Home' ? 0 : items.length - 1);
+      else move(event.key === 'ArrowRight' ? 1 : -1);
     });
     track.addEventListener('scroll', update, { passive: true });
     const observer = new ResizeObserver(update);

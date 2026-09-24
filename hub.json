@@ -120,6 +120,15 @@
   ],
   "partners": [
     {
+      "id": "holidays",
+      "brand": "Virgin Atlantic Holidays",
+      "title": "Up to £300 reward",
+      "description": "Book your holiday to Orlando with Virgin Atlantic Holidays",
+      "image": "./assets/partner-orlando.png",
+      "badge": "90 days to earn",
+      "cta": "Book now"
+    },
+    {
       "id": "voyages",
       "brand": "Virgin Voyages",
       "title": "Earn £5 reward",
@@ -132,13 +141,6 @@
       "title": "Earn £200 reward",
       "description": "When you sign-up to a 12-month Virgin Active membership",
       "image": "./assets/active.png"
-    },
-    {
-      "id": "holidays",
-      "brand": "Virgin Atlantic Holidays",
-      "title": "Earn £3 reward",
-      "description": "For every £100 you spend with Virgin Atlantic Holidays",
-      "image": "./assets/holidays.png"
     },
     {
       "id": "hotels",
@@ -166,14 +168,16 @@
     {
       "id": "hunger-games",
       "title": "WIN Hunger Games screening tickets",
-      "badge": "11 days to enter",
-      "image": "./assets/hunger-games.png"
+      "badge": "17 days to enter",
+      "image": "./assets/prize-hunger-games.png",
+      "entered": false
     },
     {
-      "id": "robbie",
-      "title": "WIN Robbie Williams at Silverstone",
-      "badge": "6 days to enter",
-      "image": "./assets/robbie.png"
+      "id": "dream-holiday",
+      "title": "WIN £5000 towards your dream holiday",
+      "badge": "Entered",
+      "image": "./assets/prize-dream-holiday.png",
+      "entered": true
     }
   ],
   "feature": {

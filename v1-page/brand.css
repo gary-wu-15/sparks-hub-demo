@@ -1,0 +1,141 @@
+/* Shared M&S shell measured on /c/sparks, 24 September 2026.
+   Account-only component geometry remains based on the supplied screenshot. */
+@font-face {
+  font-family: "New MS London";
+  src: url('./assets/mns-regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "New MS London";
+  src: url('./assets/mns-semibold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 600 800;
+  font-display: swap;
+}
+:root {
+  --mns-ink: #101820;
+  --mns-copy: #222222;
+  --mns-border: #b8b8b8;
+  font-family: "New MS London", Helvetica, Arial, sans-serif;
+  color: var(--mns-ink);
+  font-size: 16px;
+}
+.brand {
+  display: inline-flex;
+  flex-shrink: 0;
+  line-height: 1;
+  letter-spacing: normal;
+}
+.brand img { display: block; width: 100px; height: 40px; }
+.mns-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  vertical-align: middle;
+  background: currentColor;
+  mask: var(--icon) center / contain no-repeat;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+}
+[data-icon="arrow"] { --icon: url('./assets/icon-arrow.svg'); }
+[data-icon="search"] { --icon: url('./assets/icon-search.svg'); }
+[data-icon="star"] { --icon: url('./assets/icon-star.svg'); }
+[data-icon="heart"] { --icon: url('./assets/icon-heart.svg'); }
+[data-icon="bag"] { --icon: url('./assets/icon-bag.svg'); }
+[data-icon="menu"] { --icon: url('./assets/icon-menu.svg'); }
+[data-icon="close"] { --icon: url('./assets/icon-close.svg'); }
+.announcement { height: 32px; font-size: 12px; line-height: 18px; font-weight: 700; }
+.announcement .help { font-size: 14px; line-height: 22.75px; font-weight: 700; }
+.header-main.container {
+  max-width: 1280px;
+  height: 80px;
+  padding: 16px 24px;
+  margin: 0 auto;
+  gap: 24px;
+}
+.header-main .brand { width: calc(25% - 24px); }
+.header-search { width: 50%; max-width: none; margin-left: 0; }
+.header-search input {
+  height: 48px;
+  padding: 8px;
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--mns-copy);
+  background: #f5f5f5;
+  border-color: var(--mns-border);
+}
+.header-search button { width: 48px; background: var(--mns-ink); }
+.header-actions { gap: 4px; }
+.header-actions button { width: 44px; height: 48px; display: grid; place-items: center; }
+.header-actions .mns-icon, .header-actions svg { width: 28px; height: 28px; }
+.bag-count { top: 7px; right: 4px; background: var(--mns-ink); }
+.department-nav.container { max-width: 1280px; height: 40px; margin: 0 auto; gap: 0; }
+.department-nav button { flex: 1; padding: 8px 0; font-size: 14px; line-height: 22px; }
+.department-nav button:hover { text-decoration: underline; text-underline-offset: 4px; }
+.mobile-search-toggle { display: none; background: none; border: 0; }
+.breadcrumbs { font-size: 14px; line-height: 22px; padding: 12px 0; }
+h1, h2 { font-weight: 700; line-height: 32px; letter-spacing: normal; }
+.section-intro { font-size: 14px; line-height: 22px; }
+.member-copy { font-size: 14px; line-height: 22px; }
+.member-copy p { line-height: 26px; }
+.wallet-label { font-size: 14px; line-height: 22px; }
+.wallet-value { font-size: 24px; line-height: 32px; font-weight: 700; }
+.wallet-label .mns-icon { width: 20px; height: 20px; }
+.text-button, .how-it-works { font-size: 14px; line-height: 22px; }
+.text-button .mns-icon { width: 24px; height: 24px; margin-left: 4px; }
+.offer-copy strong { font-size: 16px; line-height: 24px; font-weight: 700; letter-spacing: normal; }
+.offer-description, .partner-overlay p { font-size: 14px; line-height: 22px; }
+.badge { font-size: 12px; line-height: 18px; padding: 2px 6px; background: var(--mns-ink); }
+.outline-button { font-size: 14px; line-height: 22px; border-radius: 0; }
+.partner-overlay strong { font-weight: 700; line-height: 24px; }
+.partner-overlay button { font-size: 14px; line-height: 22px; }
+.progress-label, .earn-shop { font-size: 12px; line-height: 18px; }
+.prize-copy strong { font-size: 16px; line-height: 24px; }
+.prize-copy small { font-size: 12px; line-height: 18px; }
+.feature-copy p { font-size: 14px; line-height: 22px; }
+.dialog-button { background: var(--mns-ink); font-size: 16px; line-height: 26px; border-radius: 0; }
+dialog { color: var(--mns-ink); border-radius: 0; }
+dialog h2 { font-size: 24px; line-height: 32px; }
+dialog p { font-size: 16px; line-height: 26px; }
+.dialog-search input { width: 100%; height: 48px; padding: 8px; border: 1px solid var(--mns-border); }
+.dialog-close .mns-icon { width: 20px; height: 20px; }
+.footer-links button { font-size: 14px; line-height: 22px; }
+.footer-links h3 { font-size: 18px; line-height: 26px; }
+@media (max-width: 1279px) {
+  .header-main.container { gap: 16px; }
+  .header-main .brand { width: auto; }
+  .brand img { width: 60px; height: 24px; }
+  .mobile-menu { display: block; }
+  .department-nav { display: none; }
+  .header-search { flex: 1; }
+  .header-actions button { width: 36px; }
+}
+@media (max-width: 767px) {
+  .announcement .help { display: none; }
+  .announcement > button { left: 12px; }
+  .announcement > button.next { right: 12px; }
+  .header-main.container { height: 48px; padding: 8px 16px; gap: 12px; flex-wrap: nowrap; }
+  .header-main .brand { order: -1; margin-right: 8px; }
+  .header-search { display: none; }
+  .mobile-menu, .mobile-search-toggle { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; }
+  .mobile-menu .mns-icon, .mobile-search-toggle .mns-icon { width: 20px; height: 20px; }
+  .header-actions { margin-left: auto; gap: 4px; }
+  .header-actions button { width: 28px; height: 32px; }
+  .header-actions .mns-icon, .header-actions svg { width: 20px; height: 20px; }
+  .header-actions .star-action { display: none; }
+  .bag-count { top: 0; right: -2px; }
+  .breadcrumbs { font-size: 12px; line-height: 18px; }
+  h1, h2 { font-size: 24px; line-height: 32px; }
+  .how-it-works { font-size: 12px; line-height: 18px; }
+  .wallet-label { font-size: 12px; line-height: 18px; }
+  .offer-card { min-height: 316px; }
+  .offer-description { min-height: 66px; }
+  .badge { font-size: 10px; line-height: 16px; }
+  .partner-card { height: 260px; }
+  .partner-overlay button, .outline-button { font-size: 12px; line-height: 18px; padding: 8px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo-wrap img, .partner-card > img { transition: none; }
+}

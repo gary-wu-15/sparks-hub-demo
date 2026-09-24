@@ -1,0 +1,357 @@
+/* Visible master layout; fine copy is retained where the low-resolution source is unreadable. */
+.section { margin-top: 32px; }
+.section h2 { font-size: 22px; line-height: 30px; }
+.sparks-hero { padding: 40px 32px 28px; color: #fff; background: radial-gradient(ellipse at 2% 6%, #4a4c4eaa, transparent 34%), radial-gradient(ellipse at 30% 0%, #67534270, transparent 32%), radial-gradient(ellipse at 94% 78%, #60483f88, transparent 52%), radial-gradient(ellipse at 15% 110%, #77664b, transparent 55%), linear-gradient(130deg, #171719, #171315 60%, #372c28); }
+.hero-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 24px; margin-bottom: 20px; }
+.sparks-hero .member-copy h1 { margin: 0; font-size: 32px; line-height: 40px; font-weight: 600; overflow-wrap: anywhere; }
+.hero-wallet-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.hero-wallet-heading h2 { margin: 0; font-size: 20px; line-height: 28px; font-weight: 400; }
+.sparks-hero .how-it-works { margin-left: auto; font-size: 18px; line-height: 26px; color: #cec9c7; gap: 6px; }
+.sparks-hero .how-it-works svg { width: 20px; height: 20px; margin: 0; }
+.sparks-hero .wallet-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 12px; }
+.sparks-hero .wallet-tile { display: flex; flex-direction: column; align-items: stretch; gap: 12px; min-width: 0; min-height: 124px; padding: 20px 16px; border: 0; border-radius: 4px; background: #0a0707b8; color: #fff; }
+.sparks-hero .wallet-tile:only-child { grid-column: 1 / -1; }
+.sparks-hero .wallet-value { margin: 0; font-size: 32px; line-height: 40px; }
+.sparks-hero .wallet-label { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0; font-size: 18px; line-height: 26px; }
+.sparks-hero .wallet-label svg { flex: 0 0 18px; width: 18px; height: 18px; }
+.sparks-hero .sparks-card { align-self: start; margin: 0; width: 168px; height: auto; min-height: 88px; padding: 12px 16px; background: #aa8b4e; color: #fff; border-radius: 6px; flex-direction: column; gap: 8px; font-size: 20px; line-height: 24px; }
+.sparks-hero .sparks-card svg { width: 32px; height: 32px; }
+.sparks-hero button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+.sparks-hero .wallet-tile:hover { background: #070505d9; }
+.standalone-wallet h2 { margin-bottom: 20px; font-size: 26px; line-height: 34px; }
+.standalone-wallet .wallet-tile { width: 100%; min-height: 108px; padding: 18px 20px; gap: 16px; color: #101820; border-radius: 4px; }
+.standalone-wallet-copy { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.standalone-wallet .wallet-label { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 20px; line-height: 28px; }
+.standalone-wallet .wallet-label .mns-icon { width: 28px; height: 28px; flex-shrink: 0; }
+.standalone-wallet .wallet-value { font-size: 32px; line-height: 40px; }
+.standalone-wallet .spend { flex-shrink: 0; padding: 10px 14px; font-size: 16px; line-height: 24px; background: #101820; }
+.standalone-wallet .wallet-tile:focus-visible { outline: 3px solid #aa8b4e; outline-offset: 3px; }
+@media (max-width: 540px) {
+  .standalone-wallet h2 { font-size: 24px; line-height: 32px; margin-bottom: 16px; }
+  .standalone-wallet .wallet-tile { padding: 16px; gap: 12px; min-height: 100px; }
+  .standalone-wallet .wallet-label { font-size: 16px; line-height: 24px; gap: 8px; }
+  .standalone-wallet .wallet-label .mns-icon { width: 24px; height: 24px; }
+  .standalone-wallet .wallet-value { font-size: 28px; line-height: 34px; }
+  .standalone-wallet .spend { padding: 8px 12px; font-size: 14px; }
+}
+.sparks-hero .sparks-card:hover { background: #96773e; }
+.offer-card { border-radius: 0; background: #101820; min-height: 0; }
+.photo-wrap { height: auto; aspect-ratio: 1; }
+.offer-copy, .offer-bottom { background: none; }
+.offer-copy { padding: 14px 14px 4px; }
+.offer-copy strong { font-size: 18px; line-height: 24px; }
+.offer-description { min-height: 44px; }
+.offer-bottom { padding: 10px 14px 16px; }
+.credit-section .offer-card { background: linear-gradient(120deg, #eeefed, #cbcdca); color: #101820; }
+.baby-section .offer-card { background: #ddd0c4; color: #242321; }
+.points-reward { display: flex; align-items: center; gap: 12px; margin-top: 20px; padding: 14px 16px; border: 1px solid #dedbd6; background: #fff; color: #101820; text-align: left; width: 100%; max-width: 520px; }
+.points-reward > .mns-icon:first-child { color: #b29455; }
+.points-reward > .mns-icon:last-child { margin-left: auto; }
+.points-reward strong, .points-reward small { display: block; }
+.points-reward strong { font-size: 14px; font-weight: 400; }
+.points-reward small { font-size: 12px; margin-top: 4px; }
+@media (min-width: 541px) {
+  .points-reward { max-width: none; }
+}
+.section.stamp-section h2 { font-size: 24px; line-height: 32px; margin-bottom: 12px; color: #000; }
+.stamp-section .section-intro { font-size: 16px; line-height: 26px; margin-bottom: 20px; color: #333; }
+.stamp-section.stamp-featured h2 { font-size: 28px; line-height: 36px; margin-bottom: 20px; }
+.stamp-card { width: 100%; max-width: 620px; min-height: 220px; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 24px; border: 0; border-radius: 4px; background: radial-gradient(ellipse at 76% 14%, #5c55575c, transparent 50%), radial-gradient(ellipse at 24% 25%, #301307, transparent 75%), linear-gradient(130deg, #483b35, #202329); color: #fff; text-align: left; }
+.stamp-copy { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; font-size: 20px; line-height: 30px; }
+.stamp-copy small { font-size: 14px; line-height: 22px; letter-spacing: 1.4px; font-weight: 600; }
+.stamp-copy strong { font-size: 20px; line-height: 28px; font-weight: 600; }
+.stamp-count { font-size: 18px; line-height: 26px; display: flex; align-items: center; gap: 8px; margin-top: 10px; font-weight: 600; }
+.stamp-star { display: grid; place-items: center; flex: 0 0 26px; width: 26px; height: 26px; background: #b99a54; color: #fff; border-radius: 50%; }
+.stamp-star svg { width: 20px; height: 20px; fill: #fff; stroke: none; }
+.stamp-expiry { align-self: flex-start; padding: 4px 6px; margin-top: 10px; font-size: 16px; line-height: 24px; background: #000; color: #fff; }
+.stamp-ring { position: relative; flex: 0 0 160px; width: 160px; height: 160px; }
+.stamp-ring .stamp-coffee { position: absolute; inset: 10%; width: 80%; height: 80%; border-radius: 50%; object-fit: cover; }
+.stamp-ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.stamp-segment { fill: none; stroke: #696463; stroke-width: 6; }
+.stamp-segment.earned { stroke: #b29455; }
+.partner-card { border-radius: 0; height: 320px; }
+.partner-overlay { background: linear-gradient(0deg, #201c16ed, #322c2280 80%, transparent); }
+[data-component="prize_draws"] h2 { font-size: 26px; line-height: 34px; margin-bottom: 16px; color: #000; }
+[data-component="prize_draws"] .section-intro { font-size: 18px; line-height: 28px; margin-bottom: 24px; color: #000; }
+.prize-grid { grid-template-columns: 1fr; gap: 12px; container-type: inline-size; }
+.prize-card { display: grid; grid-template-columns: 65.3% 34.7%; min-height: clamp(148px, 41.4cqi, 280px); background: #222; border-radius: 5px; }
+.prize-copy { width: auto; min-width: 0; padding: 24px; }
+.prize-copy small { font-size: 14px; line-height: 20px; margin-bottom: 14px; font-weight: 400; }
+.prize-copy .prize-entered { padding: 2px 5px; background: #fff; color: #000; }
+.prize-copy strong { font-size: 26px; line-height: 34px; font-weight: 600; margin-bottom: 24px; }
+.prize-copy .prize-cta { display: flex; align-items: center; gap: 10px; margin-top: auto; font-size: 22px; line-height: 30px; }
+.prize-cta .mns-icon { width: 32px; height: 32px; }
+.prize-card > img { width: 100%; height: 100%; min-height: 0; object-fit: cover; }
+.prize-card:focus-visible { outline: 3px solid #aa8b4e; outline-offset: 3px; }
+@media (min-width: 541px) {
+  .prize-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .prize-card { position: relative; grid-template-columns: 54% 46%; min-height: 180px; border-radius: 0; }
+  /* Copy controls card height rather than the source image's aspect ratio. */
+  .prize-card > img { position: absolute; inset: 0 0 0 auto; width: 46%; height: 100%; }
+  .prize-copy { padding: 20px; }
+  .prize-copy small { font-size: 12px; line-height: 18px; margin-bottom: 12px; }
+  .prize-copy strong { font-size: 20px; line-height: 26px; margin-bottom: 16px; overflow-wrap: anywhere; }
+  .prize-copy .prize-cta { font-size: 16px; line-height: 24px; gap: 8px; }
+  .prize-cta .mns-icon { width: 24px; height: 24px; flex-shrink: 0; }
+}
+@media (min-width: 541px) and (max-width: 1023px) {
+  .prize-grid { gap: 12px; }
+  .prize-card { grid-template-columns: 60% 40%; min-height: 160px; }
+  .prize-card > img { width: 40%; }
+  .prize-copy { padding: 16px; }
+  .prize-copy small { font-size: 11px; line-height: 16px; margin-bottom: 8px; }
+  .prize-copy strong { font-size: 16px; line-height: 22px; margin-bottom: 12px; }
+  .prize-copy .prize-cta { font-size: 14px; line-height: 20px; }
+  .prize-cta .mns-icon { width: 20px; height: 20px; }
+}
+.banner-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.feature-card { flex-direction: column; margin: 0; min-height: 0; }
+.feature-card.promo-ocado { background: #50256c; }
+.feature-card.promo-credit { background: #0b1712; }
+.feature-copy { padding: 24px; width: 100%; flex: 1; align-self: stretch; }
+.feature-copy h3 { font-size: 20px; line-height: 28px; margin-bottom: 8px; }
+.feature-copy .small-print { font-size: 11px; line-height: 17px; }
+.feature-card img { width: 100%; height: 230px; object-fit: cover; }
+.charity-section, .ranked-components > .charity-section { background: #fff; padding: 0; margin: 32px 0 0; display: block; }
+.section.charity-section h2 { font-size: 26px; line-height: 34px; margin-bottom: 14px; color: #000; }
+.charity-section .section-intro { font-size: 18px; line-height: 28px; margin-bottom: 22px; color: #000; }
+.charity-copy .text-button { display: flex; align-items: center; gap: 12px; font-size: 20px; line-height: 28px; font-weight: 600; }
+.charity-copy .text-button .mns-icon { width: 28px; height: 28px; }
+.charity-hero { display: block; width: 100%; height: auto; margin-top: 24px; }
+@media (min-width: 541px) {
+  .charity-section.charity-summary { margin-inline: calc(50% - 50vw); padding: 20px 24px 24px; background: #f4f4f4; color: #101820; }
+  .charity-summary .charity-title { gap: 24px; margin-bottom: 16px; }
+  .charity-summary .charity-title h2 { margin: 0; color: inherit; }
+  .charity-summary .charity-title button { min-height: 44px; padding: 8px 0 8px 12px; font-size: 16px; line-height: 24px; }
+  .charity-summary .charity-content { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; margin-top: 0; }
+  .charity-summary .charity-donation { min-width: 0; min-height: 128px; padding: 24px; gap: 20px; flex-wrap: wrap; justify-content: flex-start; border-radius: 4px; }
+  .charity-thumbnail { display: block; width: 104px; height: 80px; object-fit: cover; flex-shrink: 0; }
+  .charity-summary .charity-amount { font-size: 26px; line-height: 34px; }
+  .charity-summary .charity-donation small { max-width: none; font-size: 14px; line-height: 22px; }
+  .charity-summary .charity-total { margin: 0; padding: 0; font-size: 16px; line-height: 26px; text-align: center; }
+}
+@media (min-width: 541px) and (max-width: 1023px) {
+  .charity-section.charity-summary { padding: 20px; }
+  .charity-summary .charity-content { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .charity-summary .charity-total { text-align: left; }
+}
+.offers-filter { position: relative; display: flex; align-items: center; justify-content: center; gap: 12px; min-width: 76px; min-height: 44px; flex-shrink: 0; border: 0; background: none; color: #606060; padding: 6px 8px; margin-left: auto; font-size: 14px; }
+.offers-filter svg { width: 16px; height: 16px; transform: rotate(90deg); }
+.offers-filter:hover, .offers-filter.is-active { background: #f2f2f2; }
+#offer-filter-menu { position: fixed; inset: auto; margin: 0; padding: 6px; max-width: calc(100vw - 16px); overflow-y: auto; overscroll-behavior: contain; border: 1px solid #858585; border-radius: 12px; background: #555; color: #fff; box-shadow: 0 4px 14px #0003; }
+#offer-filter-menu [role="option"] { display: flex; gap: 8px; align-items: center; width: 100%; min-height: 40px; padding: 8px; border: 0; border-radius: 5px; background: none; color: inherit; font-size: 15px; line-height: 22px; text-align: left; }
+#offer-filter-menu [role="option"]:hover, #offer-filter-menu [role="option"]:focus-visible { background: #3b3b3b; outline: 2px solid #fff; outline-offset: -2px; }
+.filter-check { flex: 0 0 18px; width: 18px; }
+.offer-filter-summary { font-size: 12px; line-height: 20px; color: #606060; margin-bottom: 12px; }
+.offer-filter-summary .text-button { text-decoration: underline; margin-left: 8px; }
+@media (max-width: 540px) {
+  .site-header, .breadcrumbs, .site-footer { display: none; }
+  main.container { margin: 0; }
+  .sparks-hero { padding: 28px 18px 18px; }
+  .hero-header { gap: 12px; margin-bottom: 20px; }
+  .sparks-hero .member-copy h1 { font-size: 26px; line-height: 34px; margin-bottom: 0; }
+  .hero-wallet-heading h2 { font-size: 16px; line-height: 24px; }
+  .sparks-hero .how-it-works { font-size: 14px; line-height: 24px; gap: 5px; }
+  .sparks-hero .how-it-works svg { width: 16px; height: 16px; }
+  .sparks-hero .wallet-grid { gap: 10px; margin-top: 10px; }
+  .sparks-hero .wallet-tile { min-height: 94px; padding: 14px 12px; gap: 10px; }
+  .sparks-hero .wallet-value { font-size: 26px; line-height: 32px; }
+  .sparks-hero .wallet-label { font-size: 13px; line-height: 20px; gap: 4px; }
+  .sparks-hero .wallet-label svg { flex-basis: 14px; width: 14px; height: 16px; }
+  .sparks-hero .sparks-card { width: 52px; min-height: 52px; padding: 10px; }
+  .sparks-hero .sparks-card span { display: none; }
+  .sparks-hero .sparks-card svg { width: 32px; height: 32px; }
+  .section { margin: 28px 16px 0; }
+  .section h2 { font-size: 20px; line-height: 28px; }
+  .section-intro { font-size: 14px; line-height: 22px; margin-bottom: 16px; }
+  .persona-offer-carousel { margin-top: 16px; }
+  .carousel .offer-card { min-height: 0; }
+  .carousel .photo-wrap { height: auto; aspect-ratio: 1; }
+  .carousel .offer-copy strong { font-size: 18px; }
+  .carousel .offer-description { font-size: 14px; line-height: 22px; min-height: 44px; }
+  .stamp-card { min-height: 158px; padding: 18px 12px; gap: 12px; }
+  .stamp-ring { flex-basis: 32%; width: auto; height: auto; aspect-ratio: 1; }
+  .stamp-copy { font-size: 16px; line-height: 26px; }
+  .stamp-copy strong { font-size: 16px; line-height: 24px; }
+  .stamp-copy small { font-size: 12px; line-height: 20px; letter-spacing: 1.2px; }
+  .stamp-count { font-size: 16px; line-height: 24px; margin-top: 8px; }
+  .stamp-star { flex-basis: 24px; width: 24px; height: 24px; }
+  .stamp-expiry { font-size: 14px; line-height: 22px; margin-top: 8px; }
+  [data-component="prize_draws"] h2 { font-size: 24px; line-height: 32px; margin-bottom: 14px; }
+  [data-component="prize_draws"] .section-intro { font-size: 16px; line-height: 26px; margin-bottom: 22px; }
+  .prize-grid { gap: 9px; }
+  .prize-copy { padding: 18px 12px; }
+  .prize-copy small { font-size: 11px; line-height: 16px; margin-bottom: 10px; }
+  .prize-copy strong { font-size: 16px; line-height: 21px; margin-bottom: 20px; }
+  .prize-copy .prize-cta { font-size: 16px; line-height: 24px; gap: 8px; }
+  .prize-cta .mns-icon { width: 24px; height: 24px; }
+  .banner-grid { grid-template-columns: 1fr; gap: 12px; }
+  .feature-copy { padding: 22px 18px; }
+  .feature-card img { height: auto; aspect-ratio: 1.6; }
+  .charity-section, .ranked-components > .charity-section { display: block; margin: 28px 16px 24px; }
+  .charity-section .section-intro { font-size: 16px; line-height: 26px; margin-bottom: 20px; }
+  .charity-copy .text-button { font-size: 18px; line-height: 26px; }
+  .charity-copy .text-button .mns-icon { width: 26px; height: 26px; }
+  .charity-hero { margin-top: 22px; }
+}
+
+.offers-section .section-heading { margin-bottom: 14px; }
+.offers-section .section-heading h2 { margin: 0; font-size: 24px; line-height: 32px; color: #000; }
+.offers-section .section-intro, .credit-section .section-intro { font-size: 16px; line-height: 26px; color: #000; margin-bottom: 22px; }
+.offers-section .persona-offer-carousel, .offers-section .carousel, .credit-section .persona-offer-carousel { margin-top: 0; }
+.offers-section .offer-card {
+  border-radius: 4px;
+  background: radial-gradient(ellipse at 65% 65%, #301b0c90, transparent 40%), radial-gradient(ellipse at 0% 100%, #001b22aa, transparent 65%), #0e1418;
+  color: #fff;
+}
+.offers-section .offer-card .photo-wrap, .credit-section .offer-card .photo-wrap { height: auto; aspect-ratio: 1.44; flex-shrink: 0; }
+.offers-section .offer-card .badge { background: #101820; color: #fff; font-size: 12px; line-height: 18px; padding: 4px 6px; }
+.offers-section .offer-copy, .credit-section .offer-copy { padding: 16px 16px 0; background: none; }
+.offers-section .offer-copy strong, .credit-section .offer-copy strong { font-size: 20px; line-height: 26px; margin-bottom: 6px; }
+.offers-section .offer-description, .credit-section .offer-description { font-size: 16px; line-height: 26px; min-height: 52px; }
+.offers-section .offer-bottom, .credit-section .offer-bottom { padding: 16px; min-height: 82px; background: none; }
+.offers-section .outline-button { border: 1px solid #fff; border-radius: 0; padding: 12px 16px; min-height: 50px; font-size: 16px; line-height: 24px; font-weight: 600; }
+.offers-section .activated-label, .offers-section .earn-shop { font-size: 14px; line-height: 22px; color: #fff; }
+.offers-section .progress-label { font-size: 14px; line-height: 22px; }
+.offers-section .card-main:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+.offers-section .outline-button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.activated-offers h3, .available-offers h3 { margin: 0 0 14px; font-size: 20px; line-height: 28px; font-weight: 600; color: #101820; }
+.activated-offers + .available-offers, .available-offers + .activated-offers { margin-top: 24px; }
+.new-offer-tag { display: inline-block; align-self: flex-start; width: fit-content; padding: 3px 9px; margin-bottom: 8px; background: #dcc58e; color: #101820; font-size: 12px; line-height: 18px; font-weight: 600; }
+.drawer-tags .new-offer-tag { background: #dcc58e; color: #101820; margin-bottom: 0; }
+.offers-section .activated-offer { min-height: 0; background: #222; }
+.offers-section .activated-offer .card-main { position: relative; display: grid; grid-template-columns: 30% minmax(0, 1fr); align-items: stretch; }
+.offers-section .activated-offer .photo-wrap { width: 100%; height: 100%; aspect-ratio: auto; }
+.offers-section .activated-offer .photo-wrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.offers-section .activated-offer .offer-copy { padding: 12px 24px 12px 12px; min-width: 0; }
+.offers-section .activated-offer .badge { position: static; display: block; padding: 0; margin-bottom: 5px; background: none; font-size: 11px; line-height: 16px; }
+.offers-section .activated-offer .offer-copy strong { font-size: 16px; line-height: 22px; margin-bottom: 4px; }
+.offers-section .activated-offer .offer-description { min-height: 0; font-size: 13px; line-height: 19px; }
+.offers-section .activated-offer .offer-bottom { padding: 12px 0 0; min-height: 0; }
+.offers-section .activated-offer .progress-label, .offers-section .activated-offer .activated-label { font-size: 12px; line-height: 18px; }
+.activated-offer-chevron { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); }
+.activated-offer-chevron svg { width: 16px; height: 16px; }
+
+.baby-section h2 { font-size: 24px; line-height: 32px; margin-bottom: 14px; color: #000; }
+.baby-section .section-intro { font-size: 16px; line-height: 26px; margin-bottom: 24px; color: #000; }
+.baby-section > .text-button { display: flex; align-items: center; gap: 10px; font-size: 18px; line-height: 26px; font-weight: 600; }
+.baby-section > .text-button .mns-icon { width: 24px; height: 24px; }
+.baby-section .persona-offer-carousel { margin-top: 28px; }
+.baby-section .offer-card { border-radius: 4px; background: linear-gradient(115deg, #cdbdb0, #e9e3dd 48%, #cdbbae); color: #242321; }
+.baby-section .offer-card .photo-wrap { height: auto; aspect-ratio: 1; flex-shrink: 0; }
+.baby-section .offer-card .badge { min-width: 39%; min-height: 9%; display: grid; place-items: center; background: #101820; color: #fff; font-size: 12px; line-height: 18px; padding: 4px 6px; }
+.baby-section .offer-copy { position: relative; flex: 1; padding: 16px; background: none; }
+.baby-section .offer-copy strong { font-size: 20px; line-height: 26px; margin-bottom: 6px; }
+.baby-section .offer-copy:has(.baby-activated-tick) strong { padding-right: 34px; }
+.baby-section .offer-description { font-size: 16px; line-height: 24px; min-height: 0; }
+.baby-activated-tick { position: absolute; top: 0; right: 0; width: 42px; height: 42px; display: grid; place-items: center; background: #b99a54; color: #fff; }
+.baby-activated-tick svg { width: 28px; height: 28px; stroke-width: 2; }
+.baby-section .offer-bottom { background: none; padding: 0 16px 16px; }
+.baby-section .card-main:focus-visible { outline: 2px solid #101820; outline-offset: -4px; }
+
+.credit-section h2 { font-size: 24px; line-height: 32px; margin-bottom: 14px; color: #000; }
+.credit-section .offer-card { border-radius: 4px; background: linear-gradient(110deg, #e3e4e6, #fff 42%, #ccc); }
+.credit-section .offer-card .badge { display: grid; place-items: center; min-width: 35%; min-height: 14%; background: #101820; color: #fff; font-size: 12px; line-height: 18px; padding: 4px 6px; }
+.credit-section .outline-button { border: 1px solid #101820; border-radius: 0; padding: 12px 16px; min-height: 50px; font-size: 16px; line-height: 24px; font-weight: 600; }
+.credit-section .outline-button:hover { background: #1018200d; }
+.credit-section .activated-label, .credit-section .earn-shop, .credit-section .progress-label { font-size: 14px; line-height: 22px; }
+.credit-section .card-main:focus-visible { outline: 2px solid #101820; outline-offset: -4px; }
+.credit-section .outline-button:focus-visible { outline: 2px solid #101820; outline-offset: 3px; }
+.app-footer { display: none; }
+@media (max-width: 540px) {
+  :root { --app-footer-height: calc(64px + max(20px, env(safe-area-inset-bottom))); }
+  main.container { padding-bottom: calc(var(--app-footer-height) + 24px); }
+  .app-footer {
+    display: block;
+    position: fixed;
+    /* The studio scrolls the outer page, so anchor to its visible iframe area. */
+    top: calc(var(--preview-top) + var(--preview-height) - var(--app-footer-height));
+    left: 0;
+    right: 0;
+    height: var(--app-footer-height);
+    z-index: 8;
+    background: #fff;
+    border-top: 1px solid #eee;
+    color: #757575;
+  }
+  .app-navigation { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); height: 63px; }
+  .app-nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 0; padding: 5px 0 3px; border: 0; background: none; color: inherit; font-size: 11px; line-height: 16px; font-weight: 600; letter-spacing: .4px; }
+  .app-nav-item[aria-current="page"] { color: #000; }
+  .app-nav-item:focus-visible { outline: 2px solid #aa8b4e; outline-offset: -3px; }
+  .app-nav-icon { position: relative; display: grid; place-items: center; width: 36px; height: 28px; }
+  .app-nav-icon .mns-icon, .app-nav-icon svg { width: 26px; height: 26px; }
+  .app-home-mark { font-size: 19px; line-height: 28px; font-weight: 400; letter-spacing: -.7px; }
+  .app-nav-badge { position: absolute; top: -3px; right: 0; display: grid; place-items: center; min-width: 16px; height: 16px; padding: 0 3px; border-radius: 50%; background: #ba9754; color: #fff; font-size: 12px; line-height: 16px; font-weight: 400; letter-spacing: 0; }
+  .app-home-indicator { height: max(20px, env(safe-area-inset-bottom)); display: flex; justify-content: center; align-items: center; }
+  .app-home-indicator span { width: 33.333%; height: 5px; border-radius: 5px; background: #000; }
+}
+.partner-section h2 { font-size: 26px; line-height: 34px; margin-bottom: 14px; color: #000; }
+.partner-section .section-intro { font-size: 18px; line-height: 28px; margin-bottom: 24px; color: #000; }
+.partner-section > .text-button { font-size: 18px; line-height: 28px; font-weight: 600; }
+.partner-section .partner-carousel { margin-top: 28px; }
+.partner-section .partner-card { height: auto; min-height: 300px; aspect-ratio: 1; border-radius: 4px; background: #5c544e; }
+.partner-section .partner-card > img { object-position: center top; }
+.partner-section .partner-overlay { padding: 100px 16px 16px; background: linear-gradient(0deg, #504943f2, #15191877 55%, transparent 85%); }
+.partner-section .partner-overlay strong { font-size: 20px; line-height: 28px; font-weight: 600; }
+.partner-section .partner-overlay p { font-size: 16px; line-height: 26px; margin: 6px 0 16px; }
+.partner-section .partner-overlay button { display: flex; align-items: center; gap: 8px; width: fit-content; padding: 12px 16px; min-height: 50px; font-size: 18px; line-height: 24px; font-weight: 600; border: 1px solid #fff; }
+.partner-section .partner-card .badge { z-index: 1; font-size: 12px; line-height: 18px; padding: 4px 6px; }
+.partner-section .partner-overlay button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.banner-section .feature-card { border-radius: 0; }
+.banner-section .feature-card.promo-ocado { background: #482067; }
+.banner-section .feature-card.promo-credit { background: #09110c; }
+.banner-section .feature-copy { padding: 20px 18px 26px; }
+.banner-section .feature-copy h3 { font-size: 22px; line-height: 30px; margin-bottom: 10px; }
+.banner-section .feature-copy > p { font-size: 18px; line-height: 28px; }
+.banner-section .feature-copy > .text-button { margin-top: 24px; font-size: 18px; line-height: 28px; font-weight: 400; }
+.banner-apr { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 16px; margin: 22px 0 6px; }
+.banner-apr strong { font-size: 22px; line-height: 30px; }
+.banner-apr span { font-size: 13px; line-height: 20px; color: #c9c9c9; }
+.banner-section .feature-copy .banner-legal { font-size: 13px; line-height: 20px; color: #c9c9c9; }
+.reference-drawer .banner-apr span, .reference-drawer .banner-legal { color: #555; }
+.banner-info { width: 100%; }
+.banner-info > summary { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; cursor: pointer; list-style: none; }
+.banner-info > summary::-webkit-details-marker { display: none; }
+.banner-info > summary .mns-icon { width: 20px; height: 20px; }
+.banner-info > summary:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.banner-info .banner-legal { margin: 0; overflow-wrap: anywhere; }
+.banner-disclosure { position: relative; width: 100%; min-height: 44px; }
+.banner-disclosure .banner-apr { padding-right: 44px; }
+.banner-disclosure .banner-info > summary { position: absolute; top: 0; right: 0; }
+@media (min-width: 541px) {
+  .banner-section .banner-grid { grid-template-columns: 1fr; }
+  .banner-section .feature-card { position: relative; display: grid; grid-template-columns: 52% 48%; min-height: 280px; }
+  .banner-section .feature-card.promo-ocado, .banner-section .feature-card.promo-credit { background: #000; }
+  .banner-section .feature-copy { grid-column: 1; min-width: 0; padding: 24px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
+  .banner-section .feature-copy h3 { font-size: 24px; line-height: 32px; }
+  .banner-section .feature-copy > p { font-size: 16px; line-height: 24px; margin-bottom: 16px; overflow-wrap: anywhere; }
+  .banner-section .feature-copy .banner-apr { margin: 8px 0; }
+  .banner-section .feature-copy .banner-legal { margin-bottom: 0; }
+  .banner-section .feature-copy > .text-button { margin-top: 16px; font-size: 16px; line-height: 24px; }
+  .banner-section .feature-card > img { position: absolute; inset: 0 0 0 auto; width: 48%; height: 100%; }
+}
+@media (min-width: 541px) and (max-width: 1023px) {
+  .banner-section .feature-card { grid-template-columns: 48% 52%; min-height: 240px; }
+  .banner-section .feature-copy { grid-column: 2; padding: 20px; }
+  .banner-section .feature-copy h3 { font-size: 22px; line-height: 30px; }
+  .banner-section .feature-card > img { inset: 0 auto 0 0; }
+}
+@media (max-width: 540px) {
+  .partner-section h2 { font-size: 24px; line-height: 32px; }
+  .partner-section .section-intro { font-size: 16px; line-height: 26px; margin-bottom: 24px; }
+  .partner-section > .text-button { font-size: 18px; line-height: 28px; }
+  .partner-section .partner-card { min-height: 290px; }
+  .banner-section .banner-grid { gap: 10px; }
+  .banner-section .feature-card { position: relative; display: grid; grid-template-columns: 65.3% 34.7%; min-height: 148px; border-radius: 5px; overflow: hidden; }
+  .banner-section .feature-copy { grid-column: 1; min-width: 0; padding: 18px 12px; display: flex; flex-direction: column; align-items: flex-start; }
+  .banner-section .feature-copy h3 { font-size: 16px; line-height: 21px; margin-bottom: 8px; overflow-wrap: anywhere; }
+  .banner-section .feature-copy > p { font-size: 14px; line-height: 20px; margin: 0 0 12px; overflow-wrap: anywhere; }
+  .banner-section .feature-copy .banner-apr { gap: 2px 8px; margin: 0 0 12px; }
+  .banner-disclosure .banner-info > summary { top: -8px; }
+  .banner-section .banner-apr strong { font-size: 18px; line-height: 24px; }
+  .banner-section .banner-apr span { font-size: 12px; line-height: 18px; }
+  .banner-section .feature-copy .banner-legal { font-size: 12px; line-height: 18px; margin-bottom: 0; }
+  .banner-section .feature-copy > .text-button { margin-top: auto; padding-top: 12px; min-height: 44px; font-size: 16px; line-height: 24px; gap: 8px; }
+  .banner-section .feature-copy > .text-button .mns-icon { width: 24px; height: 24px; flex-shrink: 0; }
+  .banner-section .feature-card > img { position: absolute; inset: 0 0 0 auto; width: 34.7%; height: 100%; aspect-ratio: auto; }
+}

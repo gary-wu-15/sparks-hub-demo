@@ -1,0 +1,191 @@
+{
+  "persona": {
+    "id": "demo",
+    "name": "Alex · demo baseline",
+    "description": "Fictional customer. Duplicate to explore a personalised scenario. Each visitor’s edits stay in their own browser."
+  },
+  "customer": {
+    "name": "Alex",
+    "creditRewards": 5,
+    "sparksRewards": 15,
+    "points": 120
+  },
+  "announcement": "Christmas food to order, now available",
+  "offers": [
+    {
+      "id": "cafe",
+      "title": "Earn £5 reward",
+      "description": "Spend £20 in the M&S Café",
+      "image": "./assets/cafe.png",
+      "badge": "Ends 1 Jan 2027",
+      "status": "active",
+      "remaining": 14.8,
+      "target": 20,
+      "theme": "dark"
+    },
+    {
+      "id": "flowers",
+      "title": "Earn £5 reward",
+      "description": "Buy online flowers and plants",
+      "image": "./assets/flowers.png",
+      "badge": "Ends 1 Jan 2027",
+      "status": "shop",
+      "theme": "dark"
+    },
+    {
+      "id": "shirts",
+      "title": "Earn £6 reward",
+      "description": "Spend £20 on men's T-shirts and polo shirts",
+      "image": "./assets/shirts.png",
+      "badge": "12 days to earn",
+      "status": "shop",
+      "theme": "light"
+    },
+    {
+      "id": "italian",
+      "title": "Earn £1 reward",
+      "description": "Spend £8 on fresh Italian meals",
+      "image": "./assets/italian.png",
+      "badge": "12 days to earn",
+      "status": "shop",
+      "theme": "dark"
+    },
+    {
+      "id": "suits",
+      "title": "Earn £25 reward",
+      "description": "Spend £100 on men's suits, ties and waistcoats",
+      "image": "./assets/suits.png",
+      "badge": "12 days to earn",
+      "status": "shop",
+      "theme": "light"
+    },
+    {
+      "id": "sandwich",
+      "title": "Earn £1 reward",
+      "description": "Spend £8 on sandwiches, sushi and salads",
+      "image": "./assets/sandwich.png",
+      "badge": "12 days to earn",
+      "status": "active",
+      "remaining": 8,
+      "target": 8,
+      "theme": "dark"
+    },
+    {
+      "id": "coffee",
+      "title": "Earn £1 reward",
+      "description": "Spend £6 on tea, coffee and hot chocolate",
+      "image": "./assets/coffee.png",
+      "badge": "5 days to earn",
+      "status": "active",
+      "remaining": 6,
+      "target": 6,
+      "theme": "dark"
+    },
+    {
+      "id": "cheese",
+      "title": "Earn £1 reward",
+      "description": "Buy baking cheese",
+      "image": "./assets/cheese.png",
+      "badge": "12 days to earn",
+      "status": "available",
+      "theme": "dark"
+    },
+    {
+      "id": "champagne",
+      "title": "Earn £5 reward",
+      "description": "Spend £25 on Delacourt Champagne",
+      "image": "./assets/champagne.png",
+      "badge": "Ends 1 Jan 2027",
+      "status": "available",
+      "theme": "dark"
+    },
+    {
+      "id": "grill",
+      "title": "Earn £1 reward",
+      "description": "Spend £5 on the Grill range",
+      "image": "./assets/grill.png",
+      "badge": "5 days to earn",
+      "status": "available",
+      "theme": "dark"
+    },
+    {
+      "id": "cocktails",
+      "title": "Earn £1 reward",
+      "description": "Spend £8 on cocktail cans and mixers",
+      "image": "./assets/cocktails.png",
+      "badge": "5 days to earn",
+      "status": "available",
+      "theme": "dark"
+    }
+  ],
+  "partners": [
+    {
+      "id": "voyages",
+      "brand": "Virgin Voyages",
+      "title": "Earn £5 reward",
+      "description": "For every £100 you spend with Virgin Voyages",
+      "image": "./assets/voyages.png"
+    },
+    {
+      "id": "active",
+      "brand": "Virgin Active",
+      "title": "Earn £200 reward",
+      "description": "When you sign-up to a 12-month Virgin Active membership",
+      "image": "./assets/active.png"
+    },
+    {
+      "id": "holidays",
+      "brand": "Virgin Atlantic Holidays",
+      "title": "Earn £3 reward",
+      "description": "For every £100 you spend with Virgin Atlantic Holidays",
+      "image": "./assets/holidays.png"
+    },
+    {
+      "id": "hotels",
+      "brand": "Virgin Hotels",
+      "title": "Earn £14 reward",
+      "description": "For every £100 you spend with Virgin Hotels",
+      "image": "./assets/hotels.png"
+    },
+    {
+      "id": "trains",
+      "brand": "Virgin Trains Ticketing",
+      "title": "Earn £1 reward",
+      "description": "For every £20 you spend on Virgin Trains Ticketing",
+      "image": "./assets/trains.png"
+    },
+    {
+      "id": "media",
+      "brand": "Virgin Media",
+      "title": "Earn £90 reward",
+      "description": "When you switch to Virgin Media",
+      "image": "./assets/media.png"
+    }
+  ],
+  "prizes": [
+    {
+      "id": "hunger-games",
+      "title": "WIN Hunger Games screening tickets",
+      "badge": "11 days to enter",
+      "image": "./assets/hunger-games.png"
+    },
+    {
+      "id": "robbie",
+      "title": "WIN Robbie Williams at Silverstone",
+      "badge": "6 days to enter",
+      "image": "./assets/robbie.png"
+    }
+  ],
+  "feature": {
+    "title": "Pet Insurance",
+    "description": "Enjoy an exclusive discount on M&S Pet Insurance with Sparks. T&Cs apply",
+    "cta": "Get a quote",
+    "image": "./assets/pet.png"
+  },
+  "charity": {
+    "name": "YOUNGMINDS",
+    "raised": 125000,
+    "since": "June 2020",
+    "total": 2000000
+  }
+}
