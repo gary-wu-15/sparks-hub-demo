@@ -102,6 +102,14 @@ dialog.reference-drawer::backdrop { background: rgb(0 0 0 / 60%); }
 .drawer-footer button { width: 100%; min-height: 64px; background: white; border: 0; padding: 18px 24px; font-size: 16px; font-weight: 700; }
 .drawer-footer button:hover { background: #f5f5f5; }
 .drawer-footer button:disabled { opacity: 1; color: #606060; cursor: default; }
+.drawer-primary { width: 100%; min-height: 48px; padding: 12px 16px; border: 1px solid #101820; background: #101820; color: white; font-size: 16px; line-height: 24px; }
+.drawer-primary:hover { background: #30373d; }
+.drawer-footer .drawer-primary { background: #101820; color: white; }
+.drawer-footer .drawer-primary:hover { background: #30373d; }
+.drawer-progress { margin: 24px 0; padding: 16px; background: #f7f5f0; }
+.drawer-progress .progress-track { background: #d5d0c2; }
+.reference-drawer .drawer-progress p { font-size: 14px; line-height: 22px; margin: 8px 0 0; }
+.reference-drawer .wallet-drawer-balance { font-size: 40px; line-height: 48px; font-weight: 700; margin: 20px 0; }
 @media (max-width: 540px) {
   dialog.reference-drawer { width: 100%; }
   .drawer-content { padding-inline: 24px; }

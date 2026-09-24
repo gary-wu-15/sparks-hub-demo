@@ -53,7 +53,7 @@ export function validateHub(data) {
         if (item.details !== undefined) {
           if (!item.details || typeof item.details !== 'object' || Array.isArray(item.details)) errors.push(`${prefix}.details must be an object`);
           else {
-            for (const field of ['channel', 'body', 'includes', 'excludes']) {
+            for (const field of ['channel', 'body', 'includes', 'excludes', 'shopLabel', 'howToUse', 'terms']) {
               if (item.details[field] !== undefined && !text(item.details[field])) errors.push(`${prefix}.details.${field} must be non-empty text`);
             }
             if (item.details.heroImage !== undefined && !safeImage(item.details.heroImage)) errors.push(`${prefix}.details.heroImage must be a safe image URL`);

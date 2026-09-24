@@ -1,5 +1,5 @@
 import { fetchHub, loadSaved, validateHub } from './data.js';
-import { flowerReference, appLinks } from './reference-content.js';
+import { offerReferences, appLinks } from './reference-content.js';
 
 const app = document.getElementById('app');
 const dialog = document.getElementById('detail-dialog');
@@ -63,11 +63,14 @@ function updateState(next) {
     return false;
   }
 }
+function offerProgress(offer) {
+  return `<div class="progress-track" role="progressbar" aria-label="Spend progress" aria-valuemin="0" aria-valuemax="${offer.target}" aria-valuenow="${offer.target - offer.remaining}"><span class="progress-fill" style="width:${(1 - offer.remaining / offer.target) * 100}%"></span><span class="gold-star">✦</span></div><span class="progress-label">${money(offer.remaining)} left</span>`;
+}
 function offerCard(offer) {
   const active = state.activated.includes(offer.id) || offer.status === 'active';
   let bottom;
   if (active && offer.remaining !== undefined) {
-    bottom = `<div class="progress-track" role="progressbar" aria-label="Spend progress" aria-valuemin="0" aria-valuemax="${offer.target}" aria-valuenow="${offer.target - offer.remaining}"><span class="progress-fill" style="width:${(1 - offer.remaining / offer.target) * 100}%"></span><span class="gold-star">✦</span></div><span class="progress-label">${money(offer.remaining)} left</span>`;
+    bottom = offerProgress(offer);
   } else if (active) {
     bottom = '<span class="activated-label"><span class="gold-star">✓</span> Offer activated</span>';
   } else if (offer.status === 'shop') {
@@ -120,6 +123,7 @@ function showModal() {
 const externalLink = (url, label, cls = '') => `<a href="${esc(url)}" class="${cls}" target="_blank" rel="noopener noreferrer" title="Opens in a new tab">${label}</a>`;
 const accordion = (title, content, open = false) => `<details class="drawer-accordion"${open ? ' open' : ''}><summary>${esc(title)}</summary><div class="accordion-copy">${content}</div></details>`;
 const unavailableTerms = '<p>The screenshot shows this section collapsed. Full terms have not been supplied, so no additional offer conditions are invented here.</p>';
+const unspecifiedTerms = '<p>Full terms and exclusions for this offer have not been supplied. This prototype does not invent eligibility rules or additional conditions.</p>';
 
 function openDrawer(title, body, { hero, tags = '', subtitle = '', footer = '', note = '' } = {}) {
   dialog.className = 'reference-drawer';
@@ -129,12 +133,6 @@ function openDrawer(title, body, { hero, tags = '', subtitle = '', footer = '', 
   dialog.querySelector('.drawer-scroll').scrollTop = 0;
 }
 
-function flowerDetails(offer) {
-  const detail = { ...flowerReference, ...offer.details };
-  openDrawer(offer.title,
-    `<p>${esc(detail.body)}</p><p class="single-shop-note">This offer needs to be completed in a single shop</p><div class="drawer-earning"><span class="gold-star">★</span> Earn in one shop</div>${externalLink(detail.shopUrl, `Shop the offer ${icon('arrow')}`, 'drawer-link')}<div class="drawer-accordions">${accordion('What’s included', `<p><strong>Includes</strong><br>${esc(detail.includes)}</p><p><strong>Excludes</strong><br>${esc(detail.excludes)}</p>`, true)}${accordion('How to use', '<p>This section was collapsed in the reference. The confirmed requirement is to complete the offer in a single online shop; further instructions have not been supplied.</p>')}${accordion('Terms & Conditions', unavailableTerms)}</div>`,
-    { hero: detail.heroImage, tags: `<div class="drawer-tags"><span>${esc(offer.badge)}</span><span>${esc(detail.channel)}</span></div>`, subtitle: offer.description, note: 'Prototype offer. Shop the offer opens the public M&S flowers category in a new tab; the exact promotional destination was not visible in the screenshot.' });
-}
 function creditVouchers() {
   const balance = data.customer.creditRewards;
   openDrawer(`${money(balance)} in Rewards vouchers to spend`,
@@ -147,9 +145,40 @@ function sparksCard() {
     { footer: state.linkedDemoCard ? '<button disabled>Demo physical card linked</button>' : action('link-card', 'Link physical card'), note: 'Prototype card only. This is not your real card number or a usable barcode. Loaded card balance is separate from available Sparks rewards.' });
 }
 function details(offer) {
-  if (offer.id === 'flowers') return flowerDetails(offer);
+  const detail = { ...offerReferences[offer.id], ...offer.details };
   const activated = state.activated.includes(offer.id) || offer.status === 'active';
-  openDialog(offer.title, `${image(offer.image, '', 'dialog-image')}<p>${esc(offer.description)}</p><p>${esc(offer.badge)}</p><p>${activated ? 'This offer is activated. Scan your Sparks card when you shop to collect progress towards your reward.' : offer.status === 'shop' ? 'Earn this reward in one qualifying shop. Scan your Sparks card at checkout.' : 'Activate this offer, then scan your Sparks card when you shop.'}</p>${offer.remaining !== undefined ? `<p><strong>${money(offer.remaining)}</strong> left to spend towards this reward.</p>` : ''}`, offer.status === 'available' && !activated ? action('activate', 'Activate offer', 'dialog-button', offer.id) : action('close', 'Got it', 'dialog-button'));
+  const singleShop = offer.status === 'shop';
+  const needsActivation = offer.status === 'available' && !activated;
+  const progress = activated && offer.remaining !== undefined
+    ? `<div class="drawer-progress">${offerProgress(offer)}<p>${money(offer.target - offer.remaining)} of ${money(offer.target)} qualifying spend recorded.</p></div>` : '';
+  const guidance = needsActivation
+    ? 'Activate this offer to start this demo journey. Activation is saved for this persona only.'
+    : singleShop
+      ? 'This offer needs to be completed in a single shop'
+      : 'This offer is activated. Your current progress is shown below.';
+  const howToUse = detail.howToUse || (singleShop
+    ? 'Complete the spending or purchase requirement shown above in a single qualifying shop. Further redemption instructions have not been supplied.'
+    : 'Use this prototype to activate the offer and review its progress. No purchases are tracked or rewards earned in this demo. Further redemption instructions have not been supplied.');
+  const shop = detail.shopUrl
+    ? externalLink(detail.shopUrl, `${esc(detail.shopLabel || 'Shop the offer')} ${icon('arrow')}`, 'drawer-link')
+    : action('card', `View Sparks card ${icon('arrow')}`, 'drawer-link');
+  const cta = needsActivation ? action('activate', 'Activate offer', 'drawer-primary', offer.id) : shop;
+  openDrawer(offer.title,
+    `${detail.body ? `<p>${esc(detail.body)}</p>` : ''}<p class="single-shop-note">${esc(guidance)}</p><div class="drawer-earning"><span class="gold-star">${activated ? '✓' : '★'}</span>${activated ? 'Offer activated' : singleShop ? 'Earn in one shop' : 'Ready to activate'}</div>${progress}${cta}<div class="drawer-accordions">${accordion('What’s included', `<p><strong>Includes</strong><br>${esc(detail.includes || offer.description)}</p><p><strong>Excludes</strong><br>${esc(detail.excludes || 'Full exclusions have not been supplied.')}</p>`, true)}${accordion('How to use', `<p>${esc(howToUse)}</p>`)}${accordion('Terms & Conditions', detail.terms ? `<p>${esc(detail.terms)}</p>` : unspecifiedTerms)}</div>`,
+    {
+      hero: detail.heroImage || offer.image,
+      tags: `<div class="drawer-tags"><span>${esc(offer.badge)}</span>${detail.channel ? `<span>${esc(detail.channel)}</span>` : ''}</div>`,
+      subtitle: offer.description,
+      note: detail.shopUrl
+        ? 'Prototype offer. Shopping links open a relevant public M&S category in a new tab, not a verified promotional deep link. No real activation or reward is created.'
+        : 'Prototype offer. A shopping destination has not been supplied; use View Sparks card to continue exploring the demo. No real activation or reward is created.'
+    });
+}
+function sparksWallet() {
+  const balance = Math.max(0, data.customer.sparksRewards - state.spent);
+  openDrawer('Your Sparks rewards',
+    `<p class="wallet-drawer-balance">${money(balance)}</p><p>${balance > 0 ? 'Available in your demo Sparks rewards wallet. These rewards are separate from your Credit Card vouchers and any balance loaded on your Sparks card.' : 'Your demo Sparks rewards have been used. Reset this persona in Content & data to try again.'}</p><div class="drawer-accordions">${accordion('How to use', '<p>Use the demo rewards button to simulate spending this balance. This changes only the selected persona in this browser; it does not make a purchase or load your Sparks card.</p>')}${accordion('Terms & Conditions', unspecifiedTerms)}</div>${action('card', `View Sparks card ${icon('arrow')}`, 'drawer-link')}`,
+    { footer: balance > 0 ? action('spend', `Use ${money(balance)} demo rewards`, 'drawer-primary') : action('close', 'Done'), note: 'The flyout pattern follows the supplied references. This Sparks spending journey is illustrative, not a verified live redemption flow.' });
 }
 document.addEventListener('click', (event) => {
   const target = event.target.closest('[data-action]');
@@ -178,37 +207,34 @@ document.addEventListener('click', (event) => {
     return;
   }
   if (name === 'account') return openDialog(`Hello, ${data.customer.name}`, '<p>Welcome to your personalised Sparks hub. Your rewards, offers and favourite moments, all in one place.</p>', action('card', 'View Sparks card', 'dialog-button'));
-  if (name === 'how') return openDialog('A little more rewarding', '<p><strong>1. Activate your offers.</strong><br>Choose the Sparks offers you love.</p><p><strong>2. Shop and scan.</strong><br>Scan your Sparks card when you shop.</p><p><strong>3. Enjoy your rewards.</strong><br>Qualifying rewards appear in your Sparks wallet.</p>', action('close', 'Got it', 'dialog-button'));
+  if (name === 'how') return openDrawer('A little more rewarding', '<p><strong>1. Activate your offers.</strong><br>Choose the Sparks offers you love.</p><p><strong>2. Shop and scan.</strong><br>Scan your Sparks card when you shop.</p><p><strong>3. Enjoy your rewards.</strong><br>Qualifying rewards appear in your Sparks wallet.</p>', { footer: action('close', 'Got it'), note: 'Prototype guidance. No real rewards are earned or spent.' });
   if (name === 'credit') return creditVouchers();
-  if (name === 'credit-points') return openDialog('Credit Card rewards', `<p class="balance">${money(data.customer.creditRewards)}</p><p>You have <strong>${data.customer.points} points</strong>.</p><p>Your M&S Credit Card rewards and Sparks rewards are shown separately in your wallet.</p>`, action('close', 'Back to your hub', 'dialog-button'));
-  if (name === 'wallet') {
-    const balance = Math.max(0, data.customer.sparksRewards - state.spent);
-    return openDialog('Your Sparks rewards', `<p class="balance">${money(balance)}</p><p>${balance > 0 ? 'Try the spending journey with your demo reward balance. This only changes this persona in the prototype.' : 'Your demo rewards have been used. Reset the baseline in Content & data to try again.'}</p>`, balance > 0 ? action('spend', `Use ${money(balance)} demo rewards`, 'dialog-button') : action('close', 'Done', 'dialog-button'));
-  }
+  if (name === 'credit-points') return openDrawer('Credit Card rewards', `<p class="wallet-drawer-balance">${money(data.customer.creditRewards)}</p><p>You have <strong>${data.customer.points} points</strong>.</p><p>Your M&S Credit Card rewards and Sparks rewards are shown separately in your wallet.</p>`, { footer: action('credit', 'View Rewards vouchers'), note: 'Demo account details; the points conversion and earning rules have not been supplied.' });
+  if (name === 'wallet') return sparksWallet();
   if (name === 'spend') {
     if (updateState({ ...state, spent: data.customer.sparksRewards })) {
-      openDialog('Rewards used', '<p>Your demo Sparks rewards have been used. No payment or purchase was made.</p>', action('close', 'Back to your hub', 'dialog-button'));
+      openDrawer('Rewards used', '<p>Your demo Sparks rewards have been used. No payment or purchase was made.</p>', { footer: action('close', 'Back to your hub') });
     }
     return;
   }
   if (name === 'partner') {
     const partner = data.partners.find((item) => item.id === id);
-    return openDialog(partner.brand, `${image(partner.image, '', 'dialog-image')}<p><strong>${esc(partner.title)}</strong></p><p>${esc(partner.description)}</p><p>In a live journey, this would take you to the partner booking experience. This demo keeps you in the hub.</p>`, action('partner-continue', 'Preview partner hand-off', 'dialog-button', id), 'PARTNER REWARDS');
+    return openDrawer(partner.brand, `<p><strong>${esc(partner.title)}</strong></p><p>${esc(partner.description)}</p><p>In a live journey, this would take you to the partner booking experience. This demo keeps you in the hub.</p><div class="drawer-accordions">${accordion('Terms & Conditions', unspecifiedTerms)}</div>`, { hero: partner.image, footer: action('partner-continue', 'Preview partner hand-off', '', id), note: 'Illustrative partner journey. No information is shared with the partner.' });
   }
-  if (name === 'partner-continue') return openDialog('Partner hand-off', '<p>This is the end of the simulated journey. No information has been sent to a partner.</p>', action('close', 'Back to Sparks', 'dialog-button'));
-  if (name === 'partners') return openDialog('More from Virgin Rewards', '<p>Discover rewards from Virgin partners. Select a partner card to explore its example offer and preview the hand-off.</p>', action('close', 'Explore rewards', 'dialog-button'));
+  if (name === 'partner-continue') return openDrawer('Partner hand-off', '<p>This is the end of the simulated journey. No information has been sent to a partner.</p>', { footer: action('close', 'Back to Sparks') });
+  if (name === 'partners') return openDrawer('More from Virgin Rewards', '<p>Discover rewards from Virgin partners. Select a partner card to explore its example offer and preview the hand-off.</p>', { footer: action('close', 'Explore rewards') });
   if (name === 'prize') {
     const prize = data.prizes.find((item) => item.id === id);
     const entered = state.entered.includes(id);
-    return openDialog(prize.title, `${image(prize.image, '', 'dialog-image')}<p>${entered ? 'Your demo entry is confirmed for this persona.' : 'Try entering this prize draw. This is a simulated entry; no personal information is submitted.'}</p><p>${esc(prize.badge)}</p>`, entered ? action('close', 'Done', 'dialog-button') : action('enter-prize', 'Confirm demo entry', 'dialog-button', id), 'PRIZE DRAWS');
+    return openDrawer(prize.title, `<p>${entered ? 'Your demo entry is confirmed for this persona.' : 'Try entering this prize draw. This is a simulated entry; no personal information is submitted.'}</p><div class="drawer-accordions">${accordion('Terms & Conditions', unspecifiedTerms)}</div>`, { hero: prize.image, tags: `<div class="drawer-tags"><span>${esc(prize.badge)}</span></div>`, footer: entered ? action('close', 'Done') : action('enter-prize', 'Confirm demo entry', '', id), note: 'Demo prize draw only. No real entry is submitted.' });
   }
   if (name === 'enter-prize') {
     if (!state.entered.includes(id) && updateState({ ...state, entered: [...state.entered, id] })) {
-      openDialog("You're in!", '<p>Your demo entry has been saved for this persona. Good luck!</p>', action('close', 'Back to your hub', 'dialog-button'));
+      openDrawer("You're in!", '<p>Your demo entry has been saved for this persona. Good luck!</p>', { footer: action('close', 'Back to your hub') });
     }
     return;
   }
-  if (name === 'feature') return openDialog(data.feature.title, `<p>${esc(data.feature.description)}</p><p>This prototype stops before the provider journey. No quote is requested and no personal data is shared.</p>`, action('close', 'Back to Sparks', 'dialog-button'), 'EXPLORE MORE FROM M&S');
+  if (name === 'feature') return openDrawer(data.feature.title, `<p>${esc(data.feature.description)}</p><p>This prototype stops before the provider journey. No quote is requested and no personal data is shared.</p>`, { hero: data.feature.image, footer: action('close', 'Back to Sparks'), note: 'Illustrative provider hand-off, not a live quote journey.' });
   if (name === 'charity') return openDialog('Choose your charity', `<p>Try changing the charity linked to this demo persona.</p><label class="dialog-label">Your charity<select id="charity-choice">${[...new Set([data.charity.name, state.charity, 'YOUNGMINDS', 'SHELTER', 'MACMILLAN CANCER SUPPORT'].filter(Boolean))].map((charity) => `<option ${charity === (state.charity || data.charity.name) ? 'selected' : ''}>${esc(charity)}</option>`).join('')}</select></label>`, action('save-charity', 'Save charity', 'dialog-button'));
   if (name === 'save-charity') {
     if (updateState({ ...state, charity: document.getElementById('charity-choice').value })) {
