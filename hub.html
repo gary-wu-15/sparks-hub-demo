@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Sparks | M&S prototype</title>
+  <link rel="stylesheet" href="./hub.css">
+</head>
+<body>
+  <div id="app"><p class="loading">Loading your Sparks…</p></div>
+  <dialog id="detail-dialog" aria-labelledby="dialog-title">
+    <button class="dialog-close" aria-label="Close dialog" data-action="close">×</button>
+    <div id="dialog-content"></div>
+  </dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./hub.js"></script>
+</body>
+</html>

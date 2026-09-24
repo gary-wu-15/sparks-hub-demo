@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sparks | Prototype studio</title>
+  <link rel="stylesheet" href="./studio.css">
+</head>
+<body>
+  <header class="studio-toolbar">
+    <div class="studio-brand"><span class="spark-mark">✦</span><div><strong>Sparks</strong><span>Prototype studio</span></div><span class="version">BASE 01</span></div>
+    <div class="devices" role="group" aria-label="Preview device">
+      <button data-device="desktop" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="13" rx="2"/><path d="M8 21h8m-4-5v5"/></svg><span>Desktop</span></button>
+      <button data-device="tablet" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M11 18h2"/></svg><span>Tablet</span></button>
+      <button data-device="mobile" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg><span>Mobile</span></button>
+    </div>
+    <button id="edit-content" class="edit-button" aria-expanded="false">Content & data <span>↗</span></button>
+  </header>
+  <div class="workspace-meta"><span class="prototype-status"><i></i> Unofficial demo <b>·</b> Not a live M&S service</span><div class="persona-switch"><label for="persona-select">PERSONA</label><select id="persona-select" aria-label="Active customer persona"><option>Alex · demo baseline</option></select></div><span id="dimensions">1280 × auto · Fit</span></div>
+  <main class="workspace">
+    <div id="preview-area" class="preview-area">
+      <div id="frame-wrapper"><iframe id="preview" src="./hub.html" title="Interactive Sparks hub preview"></iframe></div>
+    </div>
+    <aside id="editor" hidden aria-label="Content and data editor">
+      <div class="panel-heading"><div><span class="eyebrow">MAKE IT YOURS</span><h1>Content & data</h1></div><button id="close-editor" aria-label="Close editor" class="icon-button">×</button></div>
+      <p class="panel-intro">Public demo with fictional account details. Do not enter real customer information. Edits stay in your browser, not everyone else’s.</p>
+      <div class="editor-tabs" role="tablist" aria-label="Editor mode">
+        <button role="tab" aria-selected="true" aria-controls="content-tab" id="tab-content" data-tab="content">Content</button>
+        <button role="tab" aria-selected="false" aria-controls="data-tab" id="tab-data" data-tab="data" tabindex="-1">Data</button>
+        <button role="tab" aria-selected="false" aria-controls="reference-tab" id="tab-reference" data-tab="reference" tabindex="-1">Reference</button>
+      </div>
+      <section id="content-tab" role="tabpanel" aria-labelledby="tab-content">
+        <div class="persona-note"><p id="persona-description"></p><button id="duplicate-persona" class="secondary-button">+ Duplicate as new persona</button></div>
+        <form id="new-persona-form" hidden>
+          <label>New persona name<input id="new-persona-name" placeholder="e.g. Food-first family" maxlength="60" required></label>
+          <button class="primary-button" type="submit">Create persona</button>
+          <button id="cancel-persona" class="secondary-button" type="button">Cancel</button>
+        </form>
+        <div class="divider"></div>
+        <form id="content-form">
+          <label>Member name<input id="member-name" required maxlength="60"></label>
+          <div class="form-row"><label>Credit rewards (£)<input id="credit-rewards" type="number" min="0" step="0.01" required></label><label>Sparks rewards (£)<input id="sparks-rewards" type="number" min="0" step="0.01" required></label></div>
+          <label>Announcement<input id="announcement" required></label>
+          <div class="divider"></div>
+          <h2>Edit an offer</h2>
+          <label>Choose offer<select id="offer-select"></select></label>
+          <fieldset id="offer-fields">
+            <label>Reward headline<input id="offer-title" required></label>
+            <label>Description<textarea id="offer-description" rows="3" required></textarea></label>
+            <label>Image URL<input id="offer-image" required></label>
+            <label>Timing label<input id="offer-badge" required></label>
+            <label>Offer state<select id="offer-status"><option value="available">Ready to activate</option><option value="active">Activated</option><option value="shop">Earn in one shop</option></select></label>
+          </fieldset>
+          <button class="primary-button" type="submit">Apply to preview <span>↗</span></button>
+        </form>
+      </section>
+      <section id="data-tab" role="tabpanel" aria-labelledby="tab-data" hidden>
+        <h2>Connect a data source</h2>
+        <p>Load a hub JSON response. Use the built-in sample or a CORS-enabled endpoint. Nothing is sent to the endpoint; no credentials are included.</p>
+        <label>Endpoint URL<input id="endpoint" value="./hub.json" placeholder="https://example.com./hub.json"></label>
+        <button id="load-endpoint" class="secondary-button">Load endpoint</button>
+        <p class="small-note">Loads a snapshot on click, not a live subscription. Your endpoint must return the same structure as the JSON below.</p>
+        <div class="divider"></div>
+        <label for="json-editor">Hub JSON</label>
+        <textarea id="json-editor" rows="18" spellcheck="false"></textarea>
+        <div class="form-row"><button id="apply-json" class="primary-button">Apply JSON</button><button id="export-json" class="secondary-button">Export JSON</button></div>
+        <label class="file-label">Import JSON<input id="import-json" type="file" accept=".json,application/json"></label>
+      </section>
+      <section id="reference-tab" role="tabpanel" aria-labelledby="tab-reference" hidden>
+        <h2>Design reference</h2>
+        <p>This anonymised demo is the visual baseline. Add a newer screenshot or a Figma frame exported as PNG/JPG to compare while we iterate.</p>
+        <label class="file-label">Choose reference image<input id="reference-file" type="file" accept="image/png,image/jpeg,image/webp"></label>
+        <p class="small-note">Reference images are for comparison; they do not automatically change the page. This uploaded reference lasts for this session.</p>
+        <a id="reference-link" href="./assets/design-reference.png" target="_blank" rel="noopener"><img id="reference-image" src="./assets/design-reference.png" alt="Anonymised demo reference"></a>
+        <span class="small-note">Open image to inspect at full size. Low-resolution photography is cropped from the supplied design; replace image URLs with production assets for final fidelity.</span>
+      </section>
+      <p id="editor-feedback" role="status" aria-live="polite"></p>
+      <div class="panel-bottom"><span id="data-source">Source: screenshot baseline</span><button id="reset">Reset this persona</button></div>
+    </aside>
+  </main>
+  <div id="studio-toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./studio.js"></script>
+</body>
+</html>
