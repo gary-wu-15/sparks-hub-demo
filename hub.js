@@ -1,4 +1,5 @@
 import { fetchHub, loadSaved, validateHub } from './data.js';
+import { flowerReference, appLinks } from './reference-content.js';
 
 const app = document.getElementById('app');
 const dialog = document.getElementById('detail-dialog');
@@ -25,9 +26,10 @@ const icon = (name) => brandIcons.has(name)
 const action = (name, label, cls = '', id = '') => `<button class="${cls}" data-action="${name}" data-id="${esc(id)}">${label}</button>`;
 const image = (src, alt = '', cls = '') => `<img src="${esc(src)}" alt="${esc(alt)}" class="${cls}" loading="lazy">`;
 let data;
-let state = { activated: [], entered: [], spent: 0, charity: null };
+let state = { activated: [], entered: [], spent: 0, charity: null, linkedDemoCard: false };
 let query = '';
 let toastTimer;
+let dialogOpener;
 const stateKey = () => `sparks-public-interactions-v1:${data?.persona?.id || 'demo'}`;
 
 function notify(message) {
@@ -37,15 +39,16 @@ function notify(message) {
   toastTimer = setTimeout(() => { toast.textContent = ''; }, 3500);
 }
 function readState() {
-  state = { activated: [], entered: [], spent: 0, charity: null };
+  state = { activated: [], entered: [], spent: 0, charity: null, linkedDemoCard: false };
   try {
     const saved = JSON.parse(localStorage.getItem(stateKey()) || 'null');
     if (saved) {
       if (!Array.isArray(saved.activated) || !saved.activated.every((id) => typeof id === 'string') ||
           !Array.isArray(saved.entered) || !saved.entered.every((id) => typeof id === 'string') ||
           !Number.isFinite(saved.spent) || saved.spent < 0 ||
-          !(saved.charity === null || typeof saved.charity === 'string')) throw new Error('Invalid saved interaction data.');
-      state = saved;
+          !(saved.charity === null || typeof saved.charity === 'string') ||
+          (saved.linkedDemoCard !== undefined && typeof saved.linkedDemoCard !== 'boolean')) throw new Error('Invalid saved interaction data.');
+      state = { ...state, ...saved };
     }
   } catch (error) { notify(`Could not restore activity: ${error.message}`); }
 }
@@ -95,7 +98,7 @@ function render() {
     <main class="container"><nav class="breadcrumbs" aria-label="Breadcrumb">${action('home', 'Home')} / ${action('account', 'Account')} / <span>Offers & Rewards</span></nav>
     <div class="member-banner"><div class="member-copy">Your Sparks<p>${esc(data.customer.name)}</p></div>${action('card', `${icon('card')}<span>Sparks card</span>`, 'sparks-card')}</div>
     <section class="section wallet-section" aria-labelledby="wallet-heading"><div class="section-heading"><h1 id="wallet-heading">Your wallet</h1>${action('how', `${icon('info')} How it works`, 'text-button how-it-works')}</div><div class="wallet-grid">${action('credit', `<span><span class="wallet-label">Credit Card rewards ${icon('arrow')}</span><strong class="wallet-value">${money(data.customer.creditRewards)}</strong></span>`, 'wallet-tile')}${action('wallet', `<span><span class="wallet-label">Sparks rewards ${icon('arrow')}</span><strong class="wallet-value">${money(balance)}</strong></span><span class="spend">Spend</span>`, 'wallet-tile gold')}</div></section>
-    <section class="section credit-section"><h2>Credit Card rewards</h2><p class="section-intro">Enjoy special rewards with your M&S Credit Card. Tap an offer for terms and exclusions</p>${action('credit', `${data.customer.points} points ${icon('arrow')}`, 'text-button')}</section>
+    <section class="section credit-section"><h2>Credit Card rewards</h2><p class="section-intro">Enjoy special rewards with your M&S Credit Card. Tap an offer for terms and exclusions</p>${action('credit-points', `${data.customer.points} points ${icon('arrow')}`, 'text-button')}</section>
     <section class="section offers-section"><h2>Sparks offers</h2><p class="section-intro">Get exclusive rewards when you activate and complete Sparks offers. Tap an offer for details and exclusions</p>${query ? `<p class="section-intro">Showing results for “${esc(query)}” · ${action('clear-search', 'Clear search', 'text-button')}</p>` : ''}<div class="offer-grid">${offers.length ? offers.map(offerCard).join('') : '<p class="no-offers">No matching offers. Try another search.</p>'}</div></section>
     <section class="section"><h2>Partner rewards</h2><p class="section-intro">Earn big rewards into your wallet when you book with Virgin through Sparks</p>${action('partners', `More about Virgin Rewards ${icon('arrow')}`, 'text-button')}<div class="partner-grid">${data.partners.map((partner) => `<article class="partner-card">${image(partner.image, partner.brand)}<div class="partner-overlay"><strong>${esc(partner.title)}</strong><p>${esc(partner.description)}</p>${action('partner', `View details ${icon('arrow')}`, 'outline-button', partner.id)}</div></article>`).join('')}</div></section>
     <section class="section"><h2>Prize draws</h2><p class="section-intro">Enter our latest draw for your chance to win exclusive experiences and prizes</p><div class="prize-grid">${data.prizes.map((prize) => action('prize', `<span class="prize-copy"><small>${esc(prize.badge)}</small><strong>${esc(prize.title)}</strong><span>${state.entered.includes(prize.id) ? 'Entry confirmed ✓' : `Enter to win ${icon('arrow')}`}</span></span>${image(prize.image)}`, 'prize-card', prize.id)).join('')}</div></section>
@@ -104,11 +107,47 @@ function render() {
     ${footer()}${action('feedback', 'Feedback', 'feedback-tab')}`;
 }
 function openDialog(title, body, button = '', eyebrow = 'YOUR SPARKS') {
+  dialog.className = '';
   document.getElementById('dialog-content').innerHTML = `<p class="dialog-eyebrow">${esc(eyebrow)}</p><h2 id="dialog-title">${esc(title)}</h2>${body}${button}<p class="dialog-note">Interactive prototype only. No real transactions, activations or entries are made. Offer terms and dates are illustrative, taken from the supplied design.</p>`;
   window.parent.postMessage({ type: 'hub-dialog' }, location.origin);
-  if (!dialog.open) dialog.showModal();
+  showModal();
+}
+function showModal() {
+  if (dialog.open) return;
+  dialogOpener = document.activeElement;
+  dialog.showModal();
+}
+const externalLink = (url, label, cls = '') => `<a href="${esc(url)}" class="${cls}" target="_blank" rel="noopener noreferrer" title="Opens in a new tab">${label}</a>`;
+const accordion = (title, content, open = false) => `<details class="drawer-accordion"${open ? ' open' : ''}><summary>${esc(title)}</summary><div class="accordion-copy">${content}</div></details>`;
+const unavailableTerms = '<p>The screenshot shows this section collapsed. Full terms have not been supplied, so no additional offer conditions are invented here.</p>';
+
+function openDrawer(title, body, { hero, tags = '', subtitle = '', footer = '', note = '' } = {}) {
+  dialog.className = 'reference-drawer';
+  document.getElementById('dialog-content').innerHTML = `<div class="drawer-scroll">${hero ? image(hero, '', 'drawer-hero') : ''}<div class="drawer-content${hero ? ' with-hero' : ''}">${tags}<h2 id="dialog-title">${esc(title)}</h2>${subtitle ? `<p class="offer-subtitle">${esc(subtitle)}</p>` : ''}${body}${note ? `<p class="drawer-disclaimer">${esc(note)}</p>` : ''}</div></div>${footer ? `<div class="drawer-footer">${footer}</div>` : ''}`;
+  parent.postMessage({ type: 'hub-dialog' }, location.origin);
+  showModal();
+  dialog.querySelector('.drawer-scroll').scrollTop = 0;
+}
+
+function flowerDetails(offer) {
+  const detail = { ...flowerReference, ...offer.details };
+  openDrawer(offer.title,
+    `<p>${esc(detail.body)}</p><p class="single-shop-note">This offer needs to be completed in a single shop</p><div class="drawer-earning"><span class="gold-star">★</span> Earn in one shop</div>${externalLink(detail.shopUrl, `Shop the offer ${icon('arrow')}`, 'drawer-link')}<div class="drawer-accordions">${accordion('What’s included', `<p><strong>Includes</strong><br>${esc(detail.includes)}</p><p><strong>Excludes</strong><br>${esc(detail.excludes)}</p>`, true)}${accordion('How to use', '<p>This section was collapsed in the reference. The confirmed requirement is to complete the offer in a single online shop; further instructions have not been supplied.</p>')}${accordion('Terms & Conditions', unavailableTerms)}</div>`,
+    { hero: detail.heroImage, tags: `<div class="drawer-tags"><span>${esc(offer.badge)}</span><span>${esc(detail.channel)}</span></div>`, subtitle: offer.description, note: 'Prototype offer. Shop the offer opens the public M&S flowers category in a new tab; the exact promotional destination was not visible in the screenshot.' });
+}
+function creditVouchers() {
+  const balance = data.customer.creditRewards;
+  openDrawer(`${money(balance)} in Rewards vouchers to spend`,
+    `<p>Redeem your Rewards vouchers in store with the app or when you pay online.</p>${balance > 0 ? `<div class="voucher-row"><strong class="voucher-value">${money(balance)}</strong><div class="voucher-meta"><strong>More than 60 days to use</strong><span>Expires: 31 August 2027</span><span>In-store & online</span></div></div>` : '<p>No Rewards vouchers available in this demo persona.</p>'}<div class="voucher-terms">${accordion('Terms & Conditions', unavailableTerms)}</div><p class="app-prompt">To redeem your Rewards in store, you'll need the<br>${externalLink(appLinks.overview, 'M&S app')}</p>${externalLink(appLinks.ios, image('./assets/app-store.svg', 'Download on the App Store'), 'app-store-link')}`,
+    { note: 'Demo balance and example expiry date. No real voucher is displayed or redeemed. App links open the official M&S download destination.' });
+}
+function sparksCard() {
+  openDrawer('Your Sparks card',
+    `<div class="sparks-wordmark" aria-label="Sparks">SP${icon('star')}ARKS</div><p class="demo-card-number">DEMO 0000 0000 0000</p><div class="demo-barcode" role="img" aria-label="Decorative demo barcode, not valid for scanning"></div><p class="card-loaded">${money(data.customer.cardLoaded ?? 0)} loaded</p><p class="card-instructions">Scan your Sparks card in store to use your balance. It will automatically be applied online. Your basket must be equal to or over this amount</p>`,
+    { footer: state.linkedDemoCard ? '<button disabled>Demo physical card linked</button>' : action('link-card', 'Link physical card'), note: 'Prototype card only. This is not your real card number or a usable barcode. Loaded card balance is separate from available Sparks rewards.' });
 }
 function details(offer) {
+  if (offer.id === 'flowers') return flowerDetails(offer);
   const activated = state.activated.includes(offer.id) || offer.status === 'active';
   openDialog(offer.title, `${image(offer.image, '', 'dialog-image')}<p>${esc(offer.description)}</p><p>${esc(offer.badge)}</p><p>${activated ? 'This offer is activated. Scan your Sparks card when you shop to collect progress towards your reward.' : offer.status === 'shop' ? 'Earn this reward in one qualifying shop. Scan your Sparks card at checkout.' : 'Activate this offer, then scan your Sparks card when you shop.'}</p>${offer.remaining !== undefined ? `<p><strong>${money(offer.remaining)}</strong> left to spend towards this reward.</p>` : ''}`, offer.status === 'available' && !activated ? action('activate', 'Activate offer', 'dialog-button', offer.id) : action('close', 'Got it', 'dialog-button'));
 }
@@ -132,10 +171,16 @@ document.addEventListener('click', (event) => {
     document.querySelector('.dialog-search input').focus();
     return;
   }
-  if (name === 'card') return openDialog('Your Sparks card', `<div class="digital-card"><strong>sparks</strong><p>${esc(data.customer.name)}</p><div class="barcode" aria-hidden="true"></div><span class="preview-warning">DEMO CARD · NOT VALID FOR USE</span></div>`, action('close', 'Done', 'dialog-button'));
+  if (name === 'card') return sparksCard();
+  if (name === 'link-card') return openDrawer('Link a physical Sparks card', '<p>This next step was not shown in the supplied screenshots. Try a simulated link using a fictional card; do not enter a real card number.</p>', { footer: action('confirm-link-card', 'Link demo card') });
+  if (name === 'confirm-link-card') {
+    if (updateState({ ...state, linkedDemoCard: true })) sparksCard();
+    return;
+  }
   if (name === 'account') return openDialog(`Hello, ${data.customer.name}`, '<p>Welcome to your personalised Sparks hub. Your rewards, offers and favourite moments, all in one place.</p>', action('card', 'View Sparks card', 'dialog-button'));
   if (name === 'how') return openDialog('A little more rewarding', '<p><strong>1. Activate your offers.</strong><br>Choose the Sparks offers you love.</p><p><strong>2. Shop and scan.</strong><br>Scan your Sparks card when you shop.</p><p><strong>3. Enjoy your rewards.</strong><br>Qualifying rewards appear in your Sparks wallet.</p>', action('close', 'Got it', 'dialog-button'));
-  if (name === 'credit') return openDialog('Credit Card rewards', `<p class="balance">${money(data.customer.creditRewards)}</p><p>You have <strong>${data.customer.points} points</strong>.</p><p>Your M&S Credit Card rewards and Sparks rewards are shown separately in your wallet.</p>`, action('close', 'Back to your hub', 'dialog-button'));
+  if (name === 'credit') return creditVouchers();
+  if (name === 'credit-points') return openDialog('Credit Card rewards', `<p class="balance">${money(data.customer.creditRewards)}</p><p>You have <strong>${data.customer.points} points</strong>.</p><p>Your M&S Credit Card rewards and Sparks rewards are shown separately in your wallet.</p>`, action('close', 'Back to your hub', 'dialog-button'));
   if (name === 'wallet') {
     const balance = Math.max(0, data.customer.sparksRewards - state.spent);
     return openDialog('Your Sparks rewards', `<p class="balance">${money(balance)}</p><p>${balance > 0 ? 'Try the spending journey with your demo reward balance. This only changes this persona in the prototype.' : 'Your demo rewards have been used. Reset the baseline in Content & data to try again.'}</p>`, balance > 0 ? action('spend', `Use ${money(balance)} demo rewards`, 'dialog-button') : action('close', 'Done', 'dialog-button'));
@@ -195,6 +240,13 @@ dialog.addEventListener('click', (event) => {
   if (event.target !== dialog) return;
   const box = dialog.getBoundingClientRect();
   if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close();
+});
+dialog.addEventListener('close', () => {
+  parent.postMessage({ type: 'hub-dialog-closed' }, location.origin);
+  if (dialogOpener && !dialogOpener.isConnected && dialogOpener.dataset.action) {
+    const selector = `[data-action="${CSS.escape(dialogOpener.dataset.action)}"]${dialogOpener.dataset.id ? `[data-id="${CSS.escape(dialogOpener.dataset.id)}"]` : ''}`;
+    document.querySelector(selector)?.focus({ preventScroll: true });
+  }
 });
 function setData(next, reset = false) {
   validateHub(next);

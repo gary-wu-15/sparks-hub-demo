@@ -9,6 +9,8 @@ let hub;
 let toastTimer;
 let referenceUrl;
 let previewScale = 1;
+let dialogOpen = false;
+let previousOverflow = '';
 
 function feedback(message, error = false) {
   $('editor-feedback').textContent = message;
@@ -93,6 +95,21 @@ window.addEventListener('message', (event) => {
   }
   if (event.data?.type === 'hub-ready' && hub) frame.contentWindow.postMessage({ type: 'hub-data', data: hub }, location.origin);
   if (event.data?.type === 'hub-dialog' || event.data?.type === 'hub-ready') updateViewport();
+  if (event.data?.type === 'hub-dialog' && !dialogOpen) {
+    dialogOpen = true;
+    previousOverflow = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = 'hidden';
+  }
+  if (event.data?.type === 'hub-dialog-closed' && dialogOpen) {
+    dialogOpen = false;
+    document.documentElement.style.overflow = previousOverflow;
+  }
+});
+frame.addEventListener('load', () => {
+  if (dialogOpen) {
+    dialogOpen = false;
+    document.documentElement.style.overflow = previousOverflow;
+  }
 });
 $('persona-select').addEventListener('change', () => {
   try {

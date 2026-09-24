@@ -14,6 +14,15 @@ export function safeImage(value) {
   }
 }
 
+export function safeLink(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && !url.username && !url.password;
+  } catch {
+    return false;
+  }
+}
+
 export function validateHub(data) {
   const errors = [];
   if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('Expected a hub JSON object.');
@@ -23,6 +32,7 @@ export function validateHub(data) {
   for (const key of ['creditRewards', 'sparksRewards', 'points']) {
     if (!amount(data.customer?.[key])) errors.push(`customer.${key} must be a non-negative number`);
   }
+  if (data.customer?.cardLoaded !== undefined && !amount(data.customer.cardLoaded)) errors.push('customer.cardLoaded must be a non-negative number');
   if (!text(data.announcement)) errors.push('announcement must be non-empty text');
   for (const key of ['offers', 'partners', 'prizes']) {
     const items = data[key];
@@ -40,6 +50,16 @@ export function validateHub(data) {
       if (key === 'partners' && !text(item.brand)) errors.push(`${prefix}.brand is required`);
       if (key !== 'partners' && !text(item.badge)) errors.push(`${prefix}.badge is required`);
       if (key === 'offers') {
+        if (item.details !== undefined) {
+          if (!item.details || typeof item.details !== 'object' || Array.isArray(item.details)) errors.push(`${prefix}.details must be an object`);
+          else {
+            for (const field of ['channel', 'body', 'includes', 'excludes']) {
+              if (item.details[field] !== undefined && !text(item.details[field])) errors.push(`${prefix}.details.${field} must be non-empty text`);
+            }
+            if (item.details.heroImage !== undefined && !safeImage(item.details.heroImage)) errors.push(`${prefix}.details.heroImage must be a safe image URL`);
+            if (item.details.shopUrl !== undefined && !safeLink(item.details.shopUrl)) errors.push(`${prefix}.details.shopUrl must be an HTTPS URL without credentials`);
+          }
+        }
         if (!['active', 'available', 'shop'].includes(item.status)) errors.push(`${prefix}.status must be active, available or shop`);
         if (!['light', 'dark'].includes(item.theme)) errors.push(`${prefix}.theme must be light or dark`);
         if (item.remaining !== undefined || item.target !== undefined) {
