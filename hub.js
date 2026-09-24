@@ -18,7 +18,10 @@ const shapes = {
   returns: '<path d="M2 7h20v15H2Zm4 4h12M12 1v5m-3-3 3 3 3-3"/>',
   menu: '<path d="M3 5h18M3 12h18M3 19h18"/>'
 };
-const icon = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true">${shapes[name] || shapes.arrow}</svg>`;
+const brandIcons = new Set(['arrow', 'search', 'star', 'heart', 'bag', 'menu', 'close']);
+const icon = (name) => brandIcons.has(name)
+  ? `<span class="mns-icon" data-icon="${name}" aria-hidden="true"></span>`
+  : `<svg viewBox="0 0 24 24" aria-hidden="true">${shapes[name] || shapes.arrow}</svg>`;
 const action = (name, label, cls = '', id = '') => `<button class="${cls}" data-action="${name}" data-id="${esc(id)}">${label}</button>`;
 const image = (src, alt = '', cls = '') => `<img src="${esc(src)}" alt="${esc(alt)}" class="${cls}" loading="lazy">`;
 let data;
@@ -86,7 +89,7 @@ function render() {
   const balance = Math.max(0, data.customer.sparksRewards - state.spent);
   app.innerHTML = `<header class="site-header">
     <div class="announcement">${action('info', '‹', '', 'Latest at M&S')}<span>${esc(data.announcement)}</span>${action('info', '›', 'next', 'Latest at M&S')}${action('info', 'Help', 'help', 'Help')}</div>
-    <div class="header-main container">${action('menu', icon('menu'), 'mobile-menu')}<a href="#" class="brand" aria-label="M&S home" data-action="home">M&S</a><form class="header-search" role="search"><input aria-label="Search offers" placeholder="Search product, code or brand" value="${esc(query)}"><button aria-label="Search offers">${icon('search')}</button></form><div class="header-actions"><button data-action="account" aria-label="Your account">${icon('user')}</button><button data-action="card" class="star-action" aria-label="Your Sparks card">${icon('star')}</button><button data-action="info" data-id="Your favourites" aria-label="Your favourites">${icon('heart')}</button><button data-action="info" data-id="Shopping bag" aria-label="Shopping bag, 1 item">${icon('bag')}<span class="bag-count">1</span></button></div></div>
+    <div class="header-main container"><button data-action="menu" class="mobile-menu" aria-label="Open navigation menu">${icon('menu')}</button><a href="#" class="brand" aria-label="M&S home" data-action="home"><img src="./assets/mands-logo.svg" alt="" width="100" height="40"></a><form class="header-search" role="search"><input aria-label="Search offers" placeholder="Search product, code or brand" value="${esc(query)}"><button aria-label="Search offers">${icon('search')}</button></form><button data-action="search" class="mobile-search-toggle" aria-label="Open search">${icon('search')}</button><div class="header-actions"><button data-action="account" aria-label="Your account">${icon('user')}</button><button data-action="card" class="star-action" aria-label="Your Sparks card">${icon('star')}</button><button data-action="info" data-id="Your favourites" aria-label="Your favourites">${icon('heart')}</button><button data-action="info" data-id="Shopping bag" aria-label="Shopping bag, 1 item">${icon('bag')}<span class="bag-count">1</span></button></div></div>
     <nav class="department-nav container" aria-label="Departments">${['Sale', 'Women', 'Lingerie', 'Men', 'Kids', 'Beauty', 'Home', 'Flowers', 'Gifts', 'Christmas', 'Sports', 'Brands', 'Food', 'Offers', 'Money'].map((item) => action('info', item, '', item)).join('')}</nav>
     </header>
     <main class="container"><nav class="breadcrumbs" aria-label="Breadcrumb">${action('home', 'Home')} / ${action('account', 'Account')} / <span>Offers & Rewards</span></nav>
@@ -124,6 +127,11 @@ document.addEventListener('click', (event) => {
     return;
   }
   if (name === 'home' || name === 'clear-search') { query = ''; render(); return; }
+  if (name === 'search') {
+    openDialog('Search Sparks offers', `<form class="dialog-search" role="search"><input aria-label="Search offers" placeholder="Search your offers" value="${esc(query)}"><button class="dialog-button" type="submit">Search offers</button></form>`);
+    document.querySelector('.dialog-search input').focus();
+    return;
+  }
   if (name === 'card') return openDialog('Your Sparks card', `<div class="digital-card"><strong>sparks</strong><p>${esc(data.customer.name)}</p><div class="barcode" aria-hidden="true"></div><span class="preview-warning">DEMO CARD · NOT VALID FOR USE</span></div>`, action('close', 'Done', 'dialog-button'));
   if (name === 'account') return openDialog(`Hello, ${data.customer.name}`, '<p>Welcome to your personalised Sparks hub. Your rewards, offers and favourite moments, all in one place.</p>', action('card', 'View Sparks card', 'dialog-button'));
   if (name === 'how') return openDialog('A little more rewarding', '<p><strong>1. Activate your offers.</strong><br>Choose the Sparks offers you love.</p><p><strong>2. Shop and scan.</strong><br>Scan your Sparks card when you shop.</p><p><strong>3. Enjoy your rewards.</strong><br>Qualifying rewards appear in your Sparks wallet.</p>', action('close', 'Got it', 'dialog-button'));
@@ -169,9 +177,10 @@ document.addEventListener('click', (event) => {
   openDialog(id || 'Explore M&S', '<p>This link is a placeholder outside the Sparks hub prototype. You can keep exploring your wallet, activate offers, view partner rewards and enter demo prize draws.</p>', action('close', 'Back to Sparks', 'dialog-button'));
 });
 document.addEventListener('submit', (event) => {
-  if (!event.target.matches('.header-search')) return;
+  if (!event.target.matches('.header-search, .dialog-search')) return;
   event.preventDefault();
   query = event.target.querySelector('input').value.trim();
+  if (dialog.open) dialog.close();
   render();
   document.querySelector('.offers-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 });

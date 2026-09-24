@@ -6,11 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Your Sparks | M&S prototype</title>
   <link rel="stylesheet" href="./hub.css">
+  <link rel="stylesheet" href="./brand.css">
 </head>
 <body>
   <div id="app"><p class="loading">Loading your Sparks…</p></div>
   <dialog id="detail-dialog" aria-labelledby="dialog-title">
-    <button class="dialog-close" aria-label="Close dialog" data-action="close">×</button>
+    <button class="dialog-close" aria-label="Close dialog" data-action="close"><span class="mns-icon" data-icon="close" aria-hidden="true"></span></button>
     <div id="dialog-content"></div>
   </dialog>
   <div id="toast" role="status" aria-live="polite"></div>
