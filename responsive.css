@@ -1,0 +1,107 @@
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.footer-group { min-width: 0; }
+.footer-group summary { list-style: none; font-size: 18px; line-height: 26px; margin-bottom: 16px; }
+.footer-group summary::-webkit-details-marker { display: none; }
+.footer-group:not(.mobile-footer) summary { pointer-events: none; }
+.carousel { min-width: 0; width: 100%; }
+.carousel-track { display: flex; position: relative; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.carousel-track::-webkit-scrollbar { display: none; }
+.carousel-track > * { flex: 0 0 82%; scroll-snap-align: start; min-width: 0; }
+.carousel-controls { display: flex; align-items: center; justify-content: center; gap: 4px; padding: 12px 0 2px; }
+.carousel-controls button { background: transparent; border: 0; min-width: 24px; height: 32px; padding: 0; color: #101820; }
+.carousel-controls .carousel-previous, .carousel-controls .carousel-next { font-size: 28px; font-weight: 400; }
+.carousel-controls button:disabled { color: #a8a8a8; opacity: 1; cursor: default; }
+.carousel-dots { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; }
+.carousel-dot span { display: inline-block; width: 6px; height: 6px; background: #a5a8ab; border-radius: 50%; vertical-align: middle; }
+.carousel-dot[aria-current="true"] span { background: #101820; }
+.prize-entered { align-self: flex-start; background: white; color: #101820; font-size: 10px; line-height: 16px; padding: 0 4px; font-weight: 700; }
+@media (min-width: 541px) and (max-width: 1023px) {
+  .container { margin-inline: 16px; }
+  .header-main.container { padding-inline: 16px; gap: 12px; }
+  .offer-grid, .partner-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .offer-card { min-height: 322px; }
+  .photo-wrap { height: 180px; }
+  .partner-card { height: 268px; }
+  .charity-content { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .charity-donation { padding: 24px 16px; gap: 12px; flex-wrap: wrap; }
+  .charity-donation small { max-width: 85px; }
+  .charity-total { text-align: left; }
+  .feature-card { flex-direction: row; min-height: 240px; }
+  .feature-copy { width: 52%; }
+  .feature-card img { width: 48%; }
+  .footer-links { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; padding-inline: 20px; }
+  .footer-group summary { font-size: 16px; }
+}
+@media (max-width: 540px) {
+  .container { margin-inline: 16px; }
+  .header-main.container { display: grid; grid-template-columns: 24px 24px 1fr auto; gap: 8px; padding-inline: 12px; }
+  .header-main .brand { order: 0; grid-column: 3; grid-row: 1; margin: 0; justify-self: center; }
+  .mobile-menu { grid-column: 1; grid-row: 1; width: 24px; }
+  .mobile-search-toggle { grid-column: 2; grid-row: 1; width: 24px; }
+  .header-actions { grid-column: 4; grid-row: 1; gap: 4px; }
+  .header-actions button { width: 28px; }
+  .wallet-grid { grid-template-columns: 1fr; gap: 12px; }
+  .wallet-tile { min-height: 84px; padding: 12px; }
+  .wallet-label { font-size: 16px; line-height: 24px; }
+  .wallet-value { font-size: 24px; line-height: 30px; }
+  .spend { font-size: 12px; line-height: 18px; padding: 7px 9px; }
+  .offer-grid { grid-template-columns: 1fr; gap: 12px; }
+  .compact-offer { min-height: 156px; border-radius: 3px; position: relative; padding-right: 36%; background: #27231c; }
+  .compact-offer.light { background: #eee8e2; }
+  .compact-offer .card-main { display: flex; flex-direction: column; align-items: stretch; }
+  .compact-offer .photo-wrap { position: absolute; inset: 0 0 0 auto; width: 36%; height: 100%; }
+  .compact-offer .photo-wrap img { height: 100%; object-fit: cover; }
+  .compact-offer .badge { top: auto; bottom: 0; right: 0; padding: 1px 4px; font-size: 10px; line-height: 16px; }
+  .compact-offer .offer-copy { padding: 12px 12px 0; background: none; }
+  .compact-offer .offer-copy strong { font-size: 16px; line-height: 22px; margin-bottom: 4px; }
+  .compact-offer .offer-description { font-size: 14px; line-height: 20px; min-height: 0; }
+  .compact-offer .offer-bottom { padding: 12px; min-height: 36px; background: none; }
+  .compact-offer .earn-shop, .compact-offer .activated-label { padding-top: 0; font-size: 12px; line-height: 18px; }
+  .compact-offer .progress-track { margin: 0 3px 9px 0; height: 5px; }
+  .compact-offer .progress-label { font-size: 12px; line-height: 18px; }
+  .offers-section .carousel { margin-top: 12px; }
+  .carousel .offer-card { min-height: 318px; }
+  .carousel .photo-wrap { height: 190px; }
+  .carousel .offer-description { min-height: 44px; }
+  .carousel .offer-copy { padding: 12px 14px 0; }
+  .carousel .offer-bottom { padding: 10px 14px 14px; }
+  .carousel .outline-button { font-size: 14px; line-height: 22px; }
+  .partner-carousel { margin-top: 20px; }
+  .carousel .partner-card { height: 286px; }
+  .carousel .partner-overlay { padding: 90px 14px 16px; }
+  .carousel .partner-overlay strong { font-size: 16px; }
+  .carousel .partner-overlay p { font-size: 14px; line-height: 22px; }
+  .carousel .partner-overlay button { font-size: 14px; line-height: 22px; }
+  .carousel .prize-card { display: flex; flex-direction: column-reverse; justify-content: flex-end; min-height: 382px; }
+  .carousel .prize-card img { width: 100%; height: 220px; object-fit: cover; }
+  .carousel .prize-copy { width: 100%; min-height: 162px; padding: 16px 18px; }
+  .prize-copy small { margin-bottom: 14px; }
+  .prize-copy strong { margin-bottom: 16px; }
+  .prize-copy > span { margin-top: auto; font-size: 14px; line-height: 22px; }
+  .feature-card { flex-direction: column; }
+  .feature-copy { width: 100%; padding: 22px 18px; }
+  .feature-card img { width: 100%; height: 235px; }
+  .feature-copy h3 { font-size: 20px; line-height: 28px; margin-bottom: 10px; }
+  .feature-copy p { margin-bottom: 16px; }
+  .charity-donation { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; align-items: center; gap: 8px 20px; justify-content: start; padding: 24px; }
+  .charity-name { grid-column: 1; grid-row: 1 / 3; font-size: 10px; }
+  .charity-amount { grid-column: 2; grid-row: 1; font-size: 22px; }
+  .charity-donation small { grid-column: 2; grid-row: 2; font-size: 12px; }
+  .charity-total { text-align: left; font-size: 14px; line-height: 22px; padding: 0; margin: 4px 0; }
+  .service-strip { gap: 22px; padding-block: 32px; border-bottom: 0; }
+  .footer-links { display: block; padding: 28px 20px 48px; }
+  .footer-group { margin-bottom: 20px; }
+  .footer-group summary { cursor: pointer; position: relative; padding: 8px 24px 8px 0; font-size: 16px; line-height: 24px; margin: 0; }
+  .footer-group summary::after { content: ''; position: absolute; right: 4px; top: 12px; width: 10px; height: 10px; border-bottom: 1px solid #101820; border-right: 1px solid #101820; transform: rotate(45deg); }
+  .footer-group[open] summary::after { transform: rotate(225deg); top: 18px; }
+  .footer-group summary:focus-visible { outline: 2px solid #101820; outline-offset: 2px; }
+  .footer-group-links { padding: 12px 0 0; }
+  .footer-group-links button { font-size: 14px; line-height: 22px; }
+  .payment-options { flex-wrap: wrap; max-width: 285px; }
+  .payment-options span { font-size: 11px; padding: 12px; }
+  .payment-strip { padding-bottom: 40px; gap: 38px; }
+  .legal-links { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .legal-links button, .copyright { font-size: 12px; line-height: 18px; }
+  .legal-footer { padding-block: 30px; }
+  .social-row { gap: 40px; margin-top: 40px; }
+}

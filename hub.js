@@ -1,5 +1,6 @@
 import { fetchHub, loadSaved, validateHub } from './data.js';
 import { offerReferences, appLinks } from './reference-content.js';
+import { carousel, mountCarousels } from './carousel.js';
 
 const app = document.getElementById('app');
 const dialog = document.getElementById('detail-dialog');
@@ -30,6 +31,9 @@ let state = { activated: [], entered: [], spent: 0, charity: null, linkedDemoCar
 let query = '';
 let toastTimer;
 let dialogOpener;
+let disposeCarousels = () => {};
+const mobileLayout = matchMedia('(max-width: 540px)');
+mobileLayout.addEventListener('change', () => render());
 const stateKey = () => `sparks-public-interactions-v1:${data?.persona?.id || 'demo'}`;
 
 function notify(message) {
@@ -66,7 +70,7 @@ function updateState(next) {
 function offerProgress(offer) {
   return `<div class="progress-track" role="progressbar" aria-label="Spend progress" aria-valuemin="0" aria-valuemax="${offer.target}" aria-valuenow="${offer.target - offer.remaining}"><span class="progress-fill" style="width:${(1 - offer.remaining / offer.target) * 100}%"></span><span class="gold-star">✦</span></div><span class="progress-label">${money(offer.remaining)} left</span>`;
 }
-function offerCard(offer) {
+function offerCard(offer, compact = false) {
   const active = state.activated.includes(offer.id) || offer.status === 'active';
   let bottom;
   if (active && offer.remaining !== undefined) {
@@ -78,7 +82,29 @@ function offerCard(offer) {
   } else {
     bottom = action('activate', 'Activate offer', 'outline-button', offer.id);
   }
-  return `<article class="offer-card ${esc(offer.theme)}">${action('offer', `<span class="photo-wrap">${image(offer.image)}<span class="badge">${esc(offer.badge)}</span></span><span class="offer-copy"><strong>${esc(offer.title)}</strong><span class="offer-description">${esc(offer.description)}</span></span>`, 'card-main', offer.id)}<div class="offer-bottom">${bottom}</div></article>`;
+  const content = `<span class="photo-wrap">${image(offer.image)}<span class="badge">${esc(offer.badge)}</span></span><span class="offer-copy"><strong>${esc(offer.title)}</strong><span class="offer-description">${esc(offer.description)}</span></span>`;
+  return `<article class="offer-card ${esc(offer.theme)}${compact ? ' compact-offer' : ''}">${action('offer', content + (compact ? `<div class="offer-bottom">${bottom}</div>` : ''), 'card-main', offer.id)}${compact ? '' : `<div class="offer-bottom">${bottom}</div>`}</article>`;
+}
+function offersLayout(offers) {
+  if (!offers.length) return '<div class="offer-grid"><p class="no-offers">No matching offers. Try another search.</p></div>';
+  if (!mobileLayout.matches) return `<div class="offer-grid">${offers.map((offer) => offerCard(offer)).join('')}</div>`;
+  const available = offers.filter((offer) => offer.status === 'available' && !state.activated.includes(offer.id));
+  const ready = offers.filter((offer) => !available.includes(offer));
+  return `<div class="offer-grid">${ready.map((offer) => offerCard(offer, true)).join('')}</div>${carousel('available-offers', 'offers to activate', available.map((offer) => offerCard(offer)))}`;
+}
+function partnersLayout() {
+  const cards = data.partners.map((partner) => `<article class="partner-card">${image(partner.image, partner.brand)}<div class="partner-overlay"><strong>${esc(partner.title)}</strong><p>${esc(partner.description)}</p>${action('partner', `View details ${icon('arrow')}`, 'outline-button', partner.id)}</div></article>`);
+  return mobileLayout.matches ? `<div class="partner-carousel">${carousel('partner-rewards', 'partner rewards', cards)}</div>` : `<div class="partner-grid">${cards.join('')}</div>`;
+}
+function prizesLayout() {
+  const cards = data.prizes.map((prize) => {
+    const entered = state.entered.includes(prize.id);
+    return action('prize', `<span class="prize-copy"><small${entered ? ' class="prize-entered"' : ''}>${entered ? 'Entered' : esc(prize.badge)}</small><strong>${esc(prize.title)}</strong>${entered ? '<span class="sr-only">Entry confirmed</span>' : ''}<span>${entered ? 'Read Terms & Conditions' : 'Enter to win'} ${icon('arrow')}</span></span>${image(prize.image)}`, 'prize-card', prize.id);
+  });
+  return mobileLayout.matches ? carousel('prize-draws', 'prize draws', cards) : `<div class="prize-grid">${cards.join('')}</div>`;
+}
+function footerGroup(title, links) {
+  return `<details class="footer-group${mobileLayout.matches ? ' mobile-footer' : ''}"${mobileLayout.matches ? '' : ' open'}><summary${mobileLayout.matches ? '' : ' tabindex="-1"'}>${esc(title)}</summary><div class="footer-group-links">${links.map((label) => action('info', esc(label), '', label)).join('')}</div></details>`;
 }
 function footer() {
   const groups = {
@@ -87,10 +113,11 @@ function footer() {
     'Shopping with Us': ['Sparks', 'Sparks FAQs', 'Gift card balance', 'Size guides', 'Sustainability'],
     'More from M&S': ['Ocado', 'Corporate site', 'M&S Corporate Gifts', 'M&S Money', 'M&S Opticians', 'Careers']
   };
-  return `<footer class="site-footer"><div class="service-strip"><span>${icon('truck')} Free delivery when you spend over £75*</span><span>${icon('shop')} Next-day Click & Collect</span><span>${icon('returns')} Free returns for online orders</span></div><div class="footer-links">${Object.entries(groups).map(([title, links]) => `<div><h3>${title}</h3>${links.map((label) => action('info', esc(label), '', label)).join('')}</div>`).join('')}</div><div class="payment-strip"><div class="payments"><span>M&S</span><span class="visa">VISA</span><span class="mastercard">●●</span><span class="amex">AMEX</span><span>Pay</span><span>PayPal</span></div><div class="payment-options"><span>M&S CREDIT CARD</span><span>clearpay ↗</span><span>Pay in 3</span></div></div><div class="legal-footer"><p class="country">🇬🇧 United Kingdom (£)</p><div class="legal-links">${['Terms & Conditions', 'Privacy', 'Cookies', 'Manage cookies', 'Accessibility', 'Modern Slavery Act'].map((label) => action('info', label, '', label)).join('')}</div><p class="copyright">© 2026 Marks and Spencer plc (UK)</p><div class="social-row"><div class="social-icons">${['f', '𝕏', 'p', '▶', '◎'].map((label) => action('info', label, '', 'Social channels')).join('')}</div><div class="app-stores">${action('info', ' Download on the App Store', '', 'M&S app')}${action('info', '▷ Get it on Google Play', '', 'M&S app')}</div></div></div></footer>`;
+  return `<footer class="site-footer"><div class="service-strip"><span>${icon('truck')} Free delivery when you spend over £75*</span><span>${icon('shop')} Next-day Click & Collect</span><span>${icon('returns')} Free returns for online orders</span></div><div class="footer-links">${Object.entries(groups).map(([title, links]) => footerGroup(title, links)).join('')}</div><div class="payment-strip"><div class="payments"><span>M&S</span><span class="visa">VISA</span><span class="mastercard">●●</span><span class="amex">AMEX</span><span>Pay</span><span>PayPal</span></div><div class="payment-options"><span>M&S CREDIT CARD</span><span>clearpay ↗</span><span>Pay in 3</span></div></div><div class="legal-footer"><p class="country">🇬🇧 United Kingdom (£)</p><div class="legal-links">${['Terms & Conditions', 'Privacy', 'Cookies', 'Manage cookies', 'Accessibility', 'Modern Slavery Act'].map((label) => action('info', label, '', label)).join('')}</div><p class="copyright">© 2026 Marks and Spencer plc (UK)</p><div class="social-row"><div class="social-icons">${['f', '𝕏', 'p', '▶', '◎'].map((label) => action('info', label, '', 'Social channels')).join('')}</div><div class="app-stores">${action('info', ' Download on the App Store', '', 'M&S app')}${action('info', '▷ Get it on Google Play', '', 'M&S app')}</div></div></div></footer>`;
 }
 function render() {
   if (!data) return;
+  disposeCarousels();
   const offers = data.offers.filter((offer) => `${offer.title} ${offer.description}`.toLowerCase().includes(query.toLowerCase()));
   const balance = Math.max(0, data.customer.sparksRewards - state.spent);
   app.innerHTML = `<header class="site-header">
@@ -102,12 +129,13 @@ function render() {
     <div class="member-banner"><div class="member-copy">Your Sparks<p>${esc(data.customer.name)}</p></div>${action('card', `${icon('card')}<span>Sparks card</span>`, 'sparks-card')}</div>
     <section class="section wallet-section" aria-labelledby="wallet-heading"><div class="section-heading"><h1 id="wallet-heading">Your wallet</h1>${action('how', `${icon('info')} How it works`, 'text-button how-it-works')}</div><div class="wallet-grid">${action('credit', `<span><span class="wallet-label">Credit Card rewards ${icon('arrow')}</span><strong class="wallet-value">${money(data.customer.creditRewards)}</strong></span>`, 'wallet-tile')}${action('wallet', `<span><span class="wallet-label">Sparks rewards ${icon('arrow')}</span><strong class="wallet-value">${money(balance)}</strong></span><span class="spend">Spend</span>`, 'wallet-tile gold')}</div></section>
     <section class="section credit-section"><h2>Credit Card rewards</h2><p class="section-intro">Enjoy special rewards with your M&S Credit Card. Tap an offer for terms and exclusions</p>${action('credit-points', `${data.customer.points} points ${icon('arrow')}`, 'text-button')}</section>
-    <section class="section offers-section"><h2>Sparks offers</h2><p class="section-intro">Get exclusive rewards when you activate and complete Sparks offers. Tap an offer for details and exclusions</p>${query ? `<p class="section-intro">Showing results for “${esc(query)}” · ${action('clear-search', 'Clear search', 'text-button')}</p>` : ''}<div class="offer-grid">${offers.length ? offers.map(offerCard).join('') : '<p class="no-offers">No matching offers. Try another search.</p>'}</div></section>
-    <section class="section"><h2>Partner rewards</h2><p class="section-intro">Earn big rewards into your wallet when you book with Virgin through Sparks</p>${action('partners', `More about Virgin Rewards ${icon('arrow')}`, 'text-button')}<div class="partner-grid">${data.partners.map((partner) => `<article class="partner-card">${image(partner.image, partner.brand)}<div class="partner-overlay"><strong>${esc(partner.title)}</strong><p>${esc(partner.description)}</p>${action('partner', `View details ${icon('arrow')}`, 'outline-button', partner.id)}</div></article>`).join('')}</div></section>
-    <section class="section"><h2>Prize draws</h2><p class="section-intro">Enter our latest draw for your chance to win exclusive experiences and prizes</p><div class="prize-grid">${data.prizes.map((prize) => action('prize', `<span class="prize-copy"><small>${esc(prize.badge)}</small><strong>${esc(prize.title)}</strong><span>${state.entered.includes(prize.id) ? 'Entry confirmed ✓' : `Enter to win ${icon('arrow')}`}</span></span>${image(prize.image)}`, 'prize-card', prize.id)).join('')}</div></section>
+    <section class="section offers-section"><h2>Sparks offers</h2><p class="section-intro">Get exclusive rewards when you activate and complete Sparks offers. Tap an offer for details and exclusions</p>${query ? `<p class="section-intro">Showing results for “${esc(query)}” · ${action('clear-search', 'Clear search', 'text-button')}</p>` : ''}${offersLayout(offers)}</section>
+    <section class="section"><h2>Partner rewards</h2><p class="section-intro">Earn big rewards into your wallet when you book with Virgin through Sparks</p>${action('partners', `More about Virgin Rewards ${icon('arrow')}`, 'text-button')}${partnersLayout()}</section>
+    <section class="section"><h2>Prize draws</h2><p class="section-intro">Enter our latest draw for your chance to win exclusive experiences and prizes</p>${prizesLayout()}</section>
     <section class="section"><h2>Explore more from M&S</h2><div class="feature-card"><div class="feature-copy"><h3>${esc(data.feature.title)}</h3><p>${esc(data.feature.description)}</p>${action('feature', `${esc(data.feature.cta)} ${icon('arrow')}`, 'text-button')}</div>${image(data.feature.image, data.feature.title)}</div></section></main>
     <section class="charity-section"><div class="charity-title"><h2>Your Charity</h2>${action('charity', 'Update', 'text-button')}</div><div class="charity-content"><div class="charity-donation"><span class="charity-name">${esc(state.charity || data.charity.name)}</span><strong class="charity-amount">${state.charity && state.charity !== data.charity.name ? '£0' : money(data.charity.raised)}</strong><small>${state.charity && state.charity !== data.charity.name ? 'New selection · demo total' : `Raised since ${esc(data.charity.since)}`}</small></div><p class="charity-total">In total, you've helped us raise <strong>${money(data.charity.total)}</strong> across all charities</p></div></section>
     ${footer()}${action('feedback', 'Feedback', 'feedback-tab')}`;
+  disposeCarousels = mountCarousels(app);
 }
 function openDialog(title, body, button = '', eyebrow = 'YOUR SPARKS') {
   dialog.className = '';
@@ -190,6 +218,7 @@ document.addEventListener('click', (event) => {
   if (name === 'activate') {
     if (!state.activated.includes(id) && updateState({ ...state, activated: [...state.activated, id] })) {
       if (dialog.open) details(data.offers.find((offer) => offer.id === id));
+      else document.querySelector(`[data-action="offer"][data-id="${CSS.escape(id)}"]`)?.focus({ preventScroll: true });
       notify('Offer activated — saved to this persona');
     }
     return;
