@@ -10,7 +10,7 @@ export const PROVISIONAL_COMPONENTS = [
 
 export const HERO_COMPONENT_IDS = ['sparks_wallet', 'credit_card_wallet', 'sparks_card', 'how_it_works'];
 export const STATIC_COMPONENT_IDS = ['partnership_offers', 'banners'];
-export const PREVIEW_OVERRIDE_DEFAULTS = Object.freeze({ sparksTuesdays: false, coffeeCompletion: false, bannersAtBottom: false });
+export const PREVIEW_OVERRIDE_DEFAULTS = Object.freeze({ sparksTuesdays: false, coffeeCompletion: false, bannersAtBottom: false, walletsInHero: false });
 export const DEFAULT_RANKING_SCHEMA = 'legacy-banners';
 export const RANKING_SCHEMAS = [DEFAULT_RANKING_SCHEMA, 'separate-coffee'];
 
@@ -31,8 +31,8 @@ export function isFeaturedStampReward(recommendations, rankingSchema) {
     rankedComponents(recommendations, rankingSchema).some((item) => item.component === 'cafe_stamp_card' && item.rank === 1));
 }
 
-export function heroWalletVisibility(recommendations, rankingSchema) {
-  if (!recommendations) return { sparks: true, credit: true };
+export function heroWalletVisibility(recommendations, rankingSchema, overrides = PREVIEW_OVERRIDE_DEFAULTS) {
+  if (overrides.walletsInHero || !recommendations) return { sparks: true, credit: true };
   const components = rankedComponents(recommendations, rankingSchema).filter((item) => item.rank <= 2).map((item) => item.component);
   return {
     sparks: components.includes('sparks_wallet'),

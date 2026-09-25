@@ -54,7 +54,7 @@ function fillRanking() {
     const li = document.createElement('li');
     li.value = item.rank;
     const wallet = ['sparks_wallet', 'credit_card_wallet'].includes(item.component);
-    li.textContent = `${item.component} (${item.source})${HERO_COMPONENT_IDS.includes(item.component) && (!wallet || item.rank <= 2) ? ' - in Sparks hero' : ''}${wallet && item.rank > 2 ? ' - separate Your wallet section' : ''}${staticIds.includes(item.component) ? ' - fixed below rankings' : ''}${item.sourceComponent ? ` - replaces ${item.sourceComponent}` : ''}${PROVISIONAL_COMPONENTS.includes(item.component) ? ' - provisional mapping' : ''}`;
+    li.textContent = `${item.component} (${item.source})${HERO_COMPONENT_IDS.includes(item.component) && (!wallet || item.rank <= 2 || hub.previewOverrides.walletsInHero) ? ' - in Sparks hero' : ''}${wallet && item.rank > 2 && !hub.previewOverrides.walletsInHero ? ' - separate Your wallet section' : ''}${staticIds.includes(item.component) ? ' - fixed below rankings' : ''}${item.sourceComponent ? ` - replaces ${item.sourceComponent}` : ''}${PROVISIONAL_COMPONENTS.includes(item.component) ? ' - provisional mapping' : ''}`;
     list.append(li);
   }
   details.append(list);
@@ -63,6 +63,11 @@ function fillRanking() {
     ? 'coffee_stamps maps to cafe_stamp_card; banners maps to Marketing banners at its numeric rank, without a second copy below.'
     : 'Legacy banners-to-stamp-card mapping is preserved.');
   details.append(heroNote);
+  if (hub.previewOverrides.walletsInHero) {
+    const walletNote = document.createElement('p');
+    walletNote.textContent = 'All wallets in hero is enabled: both wallet tiles appear once in the hero, including wallets absent from the rankings. Standalone wallets are removed; source ranks and balances are unchanged.';
+    details.append(walletNote);
+  }
   const duplicates = hub.recommendations.filter((item) => !items.some((kept) => kept.rank === item.rank));
   if (duplicates.length) {
     const warning = document.createElement('p');
@@ -159,10 +164,11 @@ function fillOverrides() {
   for (const input of document.querySelectorAll('[data-preview-override]')) {
     input.checked = hub.previewOverrides[input.dataset.previewOverride];
   }
-  const { sparksTuesdays, coffeeCompletion, bannersAtBottom } = hub.previewOverrides;
+  const { sparksTuesdays, coffeeCompletion, bannersAtBottom, walletsInHero } = hub.previewOverrides;
   const bannerSummary = bannersAtBottom ? ' Marketing banners is forced to the bottom, below Partner rewards, on every device.' : '';
+  const walletSummary = walletsInHero ? ' Both wallets appear once in the Sparks hero. Standalone wallets are removed regardless of rank; balances are unchanged.' : '';
   if (device === 'desktop') {
-    $('override-summary').textContent = `${sparksTuesdays ? 'Sparks offers takes first place below the hero.' : 'Original priority order.'} Stamp cards are excluded from all desktop prototypes, even with Coffee Completion enabled. Saved coffee settings and progress still apply on Tablet and App.${bannerSummary}`;
+    $('override-summary').textContent = `${sparksTuesdays ? 'Sparks offers takes first place below the hero.' : 'Original priority order.'} Stamp cards are excluded from all desktop prototypes, even with Coffee Completion enabled. Saved coffee settings and progress still apply on Tablet and App.${bannerSummary}${walletSummary}`;
     return;
   }
   $('override-summary').textContent = (sparksTuesdays && coffeeCompletion
@@ -171,7 +177,7 @@ function fillOverrides() {
       ? 'Sparks offers takes first place below the hero. New demo offers lead; activated offers & missions follow.'
       : coffeeCompletion
         ? 'Completed coffee reward takes first place below the hero. Demo completion only; saved stamp progress is unchanged.'
-        : 'Original priority order. Unranked stamp cards appear above Partner rewards. Overrides apply below the Sparks hero and are saved for this prototype.') + bannerSummary;
+        : 'Original priority order. Unranked stamp cards appear above Partner rewards. Overrides are saved for this prototype.') + bannerSummary + walletSummary;
 }
 document.querySelectorAll('[data-preview-override]').forEach((input) => {
   input.addEventListener('change', () => {
