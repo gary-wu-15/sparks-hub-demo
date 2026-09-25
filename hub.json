@@ -1,11 +1,11 @@
 {
   "persona": {
     "id": "demo",
-    "name": "Alex · demo baseline",
+    "name": "Gary · demo baseline",
     "description": "Fictional customer. Duplicate to explore a personalised scenario. Each visitor’s edits stay in their own browser."
   },
   "customer": {
-    "name": "Alex",
+    "name": "Gary",
     "creditRewards": 5,
     "sparksRewards": 15,
     "points": 120

@@ -110,7 +110,7 @@ export function makePersona(baseline, sample, version = DEFAULT_DATASET) {
     name: `${segmentDisplayName(sample.segment, hub.rankingSchema)} / ${sample.id} (${version})`,
     description: `${dataset.label}. Numeric rankings apply below the hero, subject to device exclusions, priority overrides and the standard stamp/partner/marketing placements. Duplicate components keep their highest rank. Content and balances are illustrative, not supplied by the ranking engine.`
   };
-  hub.customer = { name: 'Alex', creditRewards: 5, sparksRewards: 15, points: 120 };
+  hub.customer = { name: baseline.customer.name, creditRewards: 5, sparksRewards: 15, points: 120 };
   hub.charity.raised = 125000;
   hub.charity.total = 2000000;
   hub.recommendations = structuredClone(sample.recommendations);

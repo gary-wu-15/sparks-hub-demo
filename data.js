@@ -139,7 +139,10 @@ export function normalizeHub(data) {
   normalized.previewOverrides = { ...PREVIEW_OVERRIDE_DEFAULTS, ...normalized.previewOverrides };
   normalized.prizes = refreshPrizeDesign(normalized.prizes);
   normalized.partners = refreshPartnerDesign(normalized.partners);
-  if (/^engine-(?:v\d+-)?CUST-/.test(normalized.persona.id)) normalized.persona.name = personaDisplayName(normalized.persona.name, normalized.rankingSchema);
+  if (/^engine-(?:v\d+-)?CUST-/.test(normalized.persona.id)) {
+    normalized.persona.name = personaDisplayName(normalized.persona.name, normalized.rankingSchema);
+  }
+  if ((/^engine-(?:v\d+-)?(?:CUST-|DEMO-)/.test(normalized.persona.id) || normalized.persona.id === 'demo') && normalized.customer.name === 'Alex') normalized.customer.name = 'Gary';
   for (const [key, value] of Object.entries(masterDefaults)) {
     if (normalized[key] === undefined) normalized[key] = structuredClone(value);
   }
